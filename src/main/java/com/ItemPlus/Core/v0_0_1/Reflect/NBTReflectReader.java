@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import net.minecraft.server.v1_7_R4.NBTBase;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -100,7 +99,7 @@ public final class NBTReflectReader
      * <p>
      * @param tag 标签
      */
-    public NBTReflectReader(final NBTBase tag)
+    public NBTReflectReader(final Object tag)
     {
         this.tag = tag;
     }

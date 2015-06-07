@@ -34,10 +34,7 @@ import com.ItemPlus.NBT.TAG_Short;
 import com.ItemPlus.NBT.TAG_String;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
-import net.minecraft.server.v1_7_R4.NBTBase;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -98,7 +95,7 @@ public final class NBTReflectWritter
      * <p>
      * @param tag 标签
      */
-    public NBTReflectWritter(final NBTBase tag)
+    public NBTReflectWritter(final Object tag)
     {
         this.tag = tag;
     }
