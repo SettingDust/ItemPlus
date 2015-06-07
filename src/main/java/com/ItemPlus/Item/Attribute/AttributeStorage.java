@@ -38,6 +38,7 @@ import java.util.UUID;
  */
 public final class AttributeStorage
 {
+
     private final ItemStack item;
     private final List<Attribute> attributeList = new ArrayList<Attribute>();
 
@@ -54,9 +55,11 @@ public final class AttributeStorage
 
     /**
      * 保存属性
+     * <p>
+     * @return ItemStack
      */
     @SuppressWarnings("unchecked")
-    public void save()
+    public ItemStack save()
     {
         if (item.getTag() instanceof TAG_Compound)
         {
@@ -102,6 +105,8 @@ public final class AttributeStorage
 
             this.item.setTag(tag);
         }
+
+        return this.item;
     }
 
     /**
