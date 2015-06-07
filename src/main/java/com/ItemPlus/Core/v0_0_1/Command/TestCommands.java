@@ -21,14 +21,9 @@ import com.ItemPlus.CommandExecutor.ItemCommand;
 import com.ItemPlus.CommandExecutor.ItemExecutor;
 import com.ItemPlus.Core.v0_0_1.Utils.ISystem;
 import com.ItemPlus.Item.Attribute.Attribute;
-import com.ItemPlus.Item.Attribute.Attribute;
 import com.ItemPlus.Item.Attribute.AttributeStorage;
 import com.ItemPlus.Item.ItemStack;
 import com.ItemPlus.NBT.TAG;
-import com.ItemPlus.NBT.TAG_Compound;
-import com.ItemPlus.NBT.TAG_List;
-import com.ItemPlus.NBT.TAG_String;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,6 +38,7 @@ import org.bukkit.entity.Player;
  */
 public class TestCommands implements ItemExecutor
 {
+
     @ItemCommand(value = "nbt", comments = "nbt测试指令")
     public Boolean execute(CommandSender sender, final String[] args)
     {
@@ -108,7 +104,7 @@ public class TestCommands implements ItemExecutor
 
                                 AttributeStorage storage = new AttributeStorage(new ItemStack(player.getItemInHand()));
                                 storage.getAttributes().add(attribute);
-                                storage.save();
+                                player.setItemInHand(storage.save());
                                 player.sendMessage("成功添加属性！");
                                 return true;
                             }
@@ -143,7 +139,7 @@ public class TestCommands implements ItemExecutor
                 {
                     player.sendMessage("属性列表:");
                     AttributeStorage storage = new AttributeStorage(new ItemStack(player.getItemInHand()));
-                    
+
                     for (Attribute attribute : storage.getAttributes())
                     {
                         player.sendMessage(" - " + attribute.getName());
