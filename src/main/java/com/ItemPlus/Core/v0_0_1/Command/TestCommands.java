@@ -99,7 +99,6 @@ public class TestCommands implements ItemExecutor
                                     {
                                         return args[2];
                                     }
-
                                 };
 
                                 AttributeStorage storage = new AttributeStorage(new ItemStack(player.getItemInHand()));
