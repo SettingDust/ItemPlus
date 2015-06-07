@@ -26,12 +26,13 @@ import org.bukkit.command.CommandSender;
  */
 public interface ItemExecutor
 {
+
     /**
      * 执行命令
      * <p>
      * @param sender 发送者
-     * @param args 参数
-     * @return
+     * @param args   参数
+     * @return Boolean
      */
     public Boolean execute(CommandSender sender, String[] args);
 }

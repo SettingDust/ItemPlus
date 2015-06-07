@@ -42,7 +42,7 @@ public class ItemPlayer
     /**
      * 获取CraftPlayer
      * <p>
-     * @return
+     * @return Player
      */
     public Player getCraftPlayer()
     {

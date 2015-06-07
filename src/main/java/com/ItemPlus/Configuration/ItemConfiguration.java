@@ -45,6 +45,7 @@ import org.yaml.snakeyaml.representer.Representer;
  */
 public class ItemConfiguration extends YamlConfiguration
 {
+
     private final DumperOptions yamlOptions = new DumperOptions();
     private final Representer yamlRepresenter = new YamlRepresenter();
     private final Yaml yaml = new Yaml(new YamlConstructor(), this.yamlRepresenter, this.yamlOptions);
@@ -190,7 +191,7 @@ public class ItemConfiguration extends YamlConfiguration
     /**
      * 修复1.7.10不能为中文
      * <p>
-     * @return
+     * @return String
      */
     @Override
     public String saveToString()
@@ -198,7 +199,7 @@ public class ItemConfiguration extends YamlConfiguration
         this.yamlOptions.setIndent(options().indent());
         this.yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         this.yamlRepresenter.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        
+
         String header = buildHeader();
         String dump = this.yaml.dump(getValues(false));
 
