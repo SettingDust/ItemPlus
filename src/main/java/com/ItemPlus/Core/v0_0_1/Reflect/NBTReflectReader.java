@@ -53,8 +53,10 @@ public final class NBTReflectReader
     private Field CRAFT_HANDLE;
     private Field STACK_TAG;
     private final Reflector reflect = new Reflector();
+    private Object nms;
     private final Object tag;
-
+    private ItemStack item;
+    
     /**
      * 构造NBT反射读取器
      * <p>
@@ -63,6 +65,8 @@ public final class NBTReflectReader
     public NBTReflectReader(final ItemStack item)
     {
         ClassLoader loader = NBTReflectReader.class.getClassLoader();
+        
+        this.item = MinecraftReflection.getBukkitItemStack(item);
 
         try
         {
@@ -89,10 +93,8 @@ public final class NBTReflectReader
             ItemPlus.logger.getLogger().log(Level.SEVERE, null, ex);
         }
 
-        Object nms = this.reflect.getFieldValue(CRAFT_HANDLE, MinecraftReflection.getBukkitItemStack(item));
-        Object tag = this.reflect.getFieldValue(STACK_TAG, nms);
-
-        this.tag = tag;
+        this.nms = this.reflect.getFieldValue(CRAFT_HANDLE, this.item);
+        this.tag = this.reflect.getFieldValue(STACK_TAG, nms);
     }
 
     /**
