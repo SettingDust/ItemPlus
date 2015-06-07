@@ -49,6 +49,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public final class NBTReflectReader
 {
+
     private Class<?> CRAFT_STACK;
     private Field CRAFT_HANDLE;
     private Field STACK_TAG;
@@ -56,7 +57,7 @@ public final class NBTReflectReader
     private Object nms;
     private final Object tag;
     private ItemStack item;
-    
+
     /**
      * 构造NBT反射读取器
      * <p>
@@ -65,11 +66,10 @@ public final class NBTReflectReader
     public NBTReflectReader(final ItemStack item)
     {
         ClassLoader loader = NBTReflectReader.class.getClassLoader();
-        
-        this.item = MinecraftReflection.getBukkitItemStack(item);
 
         try
         {
+            this.item = MinecraftReflection.getBukkitItemStack(item);
             this.CRAFT_STACK = loader.loadClass(Reflector.getMinecraftPackageName() + ".inventory.CraftItemStack");
             this.CRAFT_HANDLE = this.reflect.getField(null, CRAFT_STACK, "handle");
 
