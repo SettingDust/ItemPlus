@@ -32,6 +32,7 @@ import com.ItemPlus.NBT.TAG_List;
 import com.ItemPlus.NBT.TAG_Long;
 import com.ItemPlus.NBT.TAG_Short;
 import com.ItemPlus.NBT.TAG_String;
+import com.comphenix.protocol.utility.MinecraftReflection;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public final class NBTReflectReader
             ItemPlus.logger.getLogger().log(Level.SEVERE, null, ex);
         }
 
-        Object nms = this.reflect.getFieldValue(CRAFT_HANDLE, item);
+        Object nms = this.reflect.getFieldValue(CRAFT_HANDLE, MinecraftReflection.getBukkitItemStack(item));
         Object tag = this.reflect.getFieldValue(STACK_TAG, nms);
 
         this.tag = tag;
