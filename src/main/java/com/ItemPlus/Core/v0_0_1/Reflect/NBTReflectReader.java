@@ -167,7 +167,7 @@ public final class NBTReflectReader
         }
         else if (value.getClass().getName().contains("NBTTagString"))
         {
-            return new TAG_String(name, value.toString());
+            return new TAG_String(name, value.toString().replace("\"\"", "\""));
         }
         else if (value.getClass().getName().contains("NBTTagList"))
         {

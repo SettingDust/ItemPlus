@@ -34,6 +34,11 @@ import com.ItemPlus.NBT.TAG_Short;
 import com.ItemPlus.NBT.TAG_String;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import org.bukkit.inventory.ItemStack;
 
@@ -44,11 +49,14 @@ import org.bukkit.inventory.ItemStack;
  */
 public final class NBTReflectWritter
 {
+
     private Class<?> CRAFT_STACK;
     private Field CRAFT_HANDLE;
     private Field STACK_TAG;
     private final Reflector reflect = new Reflector();
-    private final Object tag;
+    private Object nms;
+    private Object tag;
+    private ItemStack item;
 
     /**
      * 构造NBT反射写存器
@@ -61,6 +69,7 @@ public final class NBTReflectWritter
 
         try
         {
+            this.item = MinecraftReflection.getBukkitItemStack(item);
             this.CRAFT_STACK = loader.loadClass(Reflector.getMinecraftPackageName() + ".inventory.CraftItemStack");
             this.CRAFT_HANDLE = this.reflect.getField(null, CRAFT_STACK, "handle");
 
@@ -84,10 +93,8 @@ public final class NBTReflectWritter
             ItemPlus.logger.getLogger().log(Level.SEVERE, null, ex);
         }
 
-        Object nms = this.reflect.getFieldValue(CRAFT_HANDLE, MinecraftReflection.getBukkitItemStack(item));
-        Object tag = this.reflect.getFieldValue(STACK_TAG, nms);
-
-        this.tag = tag;
+        this.nms = this.reflect.getFieldValue(CRAFT_HANDLE, this.item);
+        this.tag = this.reflect.getFieldValue(STACK_TAG, nms);
     }
 
     /**
@@ -108,58 +115,19 @@ public final class NBTReflectWritter
      */
     public void writeTag(final TAG tag) throws Exception
     {
-        this.writeTag(tag, this.tag);
+        this.tag = buildTag(tag);
+
+        if (this.item != null)
+        {
+            this.reflect.setFieldValue(this.STACK_TAG, this.nms, this.tag);
+        }
     }
 
-    private void writeTag(final TAG tag, final Object target) throws Exception
+    private Object buildTag(final TAG tag) throws Exception
     {
-        if (tag instanceof TAG_End)
-        {
-            return;
-        }
-        else if (tag instanceof TAG_Byte)
-        {
-            Class.forName("net.minecraft.nbt.NBTTagByte").getConstructor(Byte.class).newInstance(tag.getValue());
-            
-            this.reflect.setFieldValue(getDataField(target, tag), target, tag.getValue());
-            return;
-        }
-        else if (tag instanceof TAG_Short)
-        {
-            this.reflect.setFieldValue(getDataField(target, tag), target, tag.getValue());
-            return;
-        }
-        else if (tag instanceof TAG_Int)
-        {
-            this.reflect.setFieldValue(getDataField(target, tag), target, tag.getValue());
-            return;
-        }
-        else if (tag instanceof TAG_Long)
-        {
-            this.reflect.setFieldValue(getDataField(target, tag), target, tag.getValue());
-            return;
-        }
-        else if (tag instanceof TAG_Float)
-        {
-            this.reflect.setFieldValue(getDataField(target, tag), target, tag.getValue());
-            return;
-        }
-        else if (tag instanceof TAG_Double)
-        {
-            this.reflect.setFieldValue(getDataField(target, tag), target, tag.getValue());
-            return;
-        }
-        else if (tag instanceof TAG_Byte_Array)
-        {
-            this.reflect.setFieldValue(getDataField(target, tag), target, tag.getValue());
-            return;
-        }
-        else if (tag instanceof TAG_String)
-        {
-            this.reflect.setFieldValue(getDataField(target, tag), target, tag.getValue());
-            return;
-        }
-        else if (tag instanceof TAG_List)
+        Object target = getTag(tag);
+
+        if (tag instanceof TAG_List)
         {
             String type = "type";
 
@@ -171,32 +139,94 @@ public final class NBTReflectWritter
                 }
             }
 
-            this.reflect.setFieldValue(this.reflect.getField(target, null, type), target, ISystem.getTypeCode(((TAG_List) tag).getType()));
+            this.reflect.setFieldValue(this.reflect.getField(target, null, type), target, (byte) ISystem.getTypeCode(((TAG_List) tag).getType()));
 
+            List<Object> value = new ArrayList<Object>();
             for (TAG t : ((TAG_List) tag).getValue())
             {
-                this.writeTag(t, target);
+                value.add(buildTag(t));
             }
-            return;
+
+            this.reflect.setFieldValue(getDataField(target, tag), target, value);
         }
         else if (tag instanceof TAG_Compound)
         {
-            
+            Map<String, Object> value = new HashMap<String, Object>();
+
             for (String key : ((TAG_Compound) tag).getValue().keySet())
             {
-                this.writeTag(((TAG_Compound) tag).getValue().get(key), target);
+                value.put(key, buildTag(((TAG_Compound) tag).getValue().get(key)));
             }
 
-            this.writeTag(new TAG_End(), target);
-            return;
+            this.reflect.setFieldValue(getDataField(target, tag), target, value);
+        }
+
+        return target;
+    }
+
+    private Object getTag(TAG tag) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+    {
+        String packageName = "net.minecraft.nbt.";
+
+        try
+        {
+            Class.forName(packageName + "NBTBase");
+        }
+        catch (ClassNotFoundException ex)
+        {
+            packageName = "net.minecraft.server.v1_7_R4";
+        }
+
+        if (tag instanceof TAG_End)
+        {
+            return Class.forName(packageName + "NBTTagEnd").getConstructor().newInstance();
+        }
+        else if (tag instanceof TAG_Byte)
+        {
+            return Class.forName(packageName + "NBTTagByte").getConstructor(byte.class).newInstance(tag.getValue());
+        }
+        else if (tag instanceof TAG_Short)
+        {
+            return Class.forName(packageName + "NBTTagShort").getConstructor(short.class).newInstance(tag.getValue());
+        }
+        else if (tag instanceof TAG_Int)
+        {
+            return Class.forName(packageName + "NBTTagInt").getConstructor(int.class).newInstance(tag.getValue());
+        }
+        else if (tag instanceof TAG_Long)
+        {
+            return Class.forName(packageName + "NBTTagLong").getConstructor(long.class).newInstance(tag.getValue());
+        }
+        else if (tag instanceof TAG_Float)
+        {
+            return Class.forName(packageName + "NBTTagFloat").getConstructor(float.class).newInstance(tag.getValue());
+        }
+        else if (tag instanceof TAG_Double)
+        {
+            return Class.forName(packageName + "NBTTagDouble").getConstructor(double.class).newInstance(tag.getValue());
+        }
+        else if (tag instanceof TAG_Byte_Array)
+        {
+            return Class.forName(packageName + "NBTTagByteArray").getConstructor(byte[].class).newInstance(tag.getValue());
+        }
+        else if (tag instanceof TAG_String)
+        {
+            return Class.forName(packageName + "NBTTagString").getConstructor(String.class).newInstance(((TAG_String) tag).getValue().replace("\"\"", "\""));
+        }
+        else if (tag instanceof TAG_List)
+        {
+            return Class.forName(packageName + "NBTTagList").getConstructor().newInstance();
+        }
+        else if (tag instanceof TAG_Compound)
+        {
+            return Class.forName(packageName + "NBTTagCompound").getConstructor().newInstance();
         }
         else if (tag instanceof TAG_Int_Array)
         {
-            this.reflect.setFieldValue(getDataField(target, tag), target, tag.getValue());
-            return;
+            return Class.forName(packageName + "NBTTagIntArray").getConstructor(int[].class).newInstance(tag.getValue());
         }
 
-        throw new Exception("NBT类型 " + tag.getClass().getName() + " 不存在!");
+        return null;
     }
 
     private Field getDataField(final Object nms, final TAG tag)
