@@ -49,7 +49,6 @@ import org.bukkit.inventory.ItemStack;
  */
 public final class NBTReflectWritter
 {
-
     private Class<?> CRAFT_STACK;
     private Field CRAFT_HANDLE;
     private Field STACK_TAG;
@@ -174,7 +173,7 @@ public final class NBTReflectWritter
         }
         catch (ClassNotFoundException ex)
         {
-            packageName = "net.minecraft.server.v1_7_R4";
+            packageName = "net.minecraft.server.v1_7_R4.";
         }
 
         if (tag instanceof TAG_End)
@@ -264,5 +263,4 @@ public final class NBTReflectWritter
             return reflect.getField(nms, null, "data");
         }
     }
-
 }
