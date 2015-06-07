@@ -1,0 +1,24 @@
+-classpath
+'C:/Users/Jerry/.m2/repository/com/ItemPlus/Vault/1.2.25-b333/Vault-1.2.25-b333.jar;C:/Users/Jerry/.m2/repository/com/ItemPlus/Bukkit/1.7.10/Bukkit-1.7.10-R0.1.jar;C:/Users/Jerry/.m2/repository/com/ItemPlus/Cauldron/1.7.10/Cauldron-1.7.10.jar;C:/Users/Jerry/.m2/repository/com/ItemPlus/ProtocolLib/3.3.1/ProtocolLib-3.3.1.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'C:/Users/Jerry/Documents/ItemPlus/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2015. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/Jerry/Documents/ItemPlus/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'ItemPlus 1.0-SNAPSHOT API'
+-linkoffline
+'http://docs.oracle.com/javase/8/docs/api' 'C:/Users/Jerry/Documents/ItemPlus/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'ItemPlus 1.0-SNAPSHOT API'
