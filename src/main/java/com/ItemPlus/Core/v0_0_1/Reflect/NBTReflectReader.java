@@ -130,7 +130,7 @@ public final class NBTReflectReader
         }
         else if (value.getClass().getName().contains("NBTTagShort"))
         {
-            return new TAG_Short(name, new Short(value.toString()));
+            return new TAG_Short(name, new Short(value.toString().substring(0, value.toString().length() - 1)));
         }
         else if (value.getClass().getName().contains("NBTTagInt"))
         {
