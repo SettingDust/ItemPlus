@@ -63,26 +63,23 @@ public final class AttributeStorage
         {
             TAG_Compound tag = (TAG_Compound) item.getTag();
 
-            if (!tag.getValue().containsKey("AttributeModifiers"))
-            {
-                tag.getValue().put("AttributeModifiers", new TAG_List("AttributeModifiers", TAG_Compound.class, new ArrayList<TAG>()));
-            }
+            tag.getValue().put("AttributeModifiers", new TAG_List("AttributeModifiers", TAG_Compound.class, new ArrayList<TAG>()));
 
             List<TAG> attributes = ((TAG_List) tag.getValue().get("AttributeModifiers")).getValue();
 
             Attributes:
             for (Attribute attribute : this.getAttributes())
             {
-                for (TAG attribute1 : attributes)
+                for (TAG attributeTag : attributes)
                 {
-                    if (attribute1 instanceof TAG_Compound)
+                    if (attributeTag instanceof TAG_Compound)
                     {
-                        if (!((TAG_Compound) attribute1).getValue().containsKey("Name"))
+                        if (!((TAG_Compound) attributeTag).getValue().containsKey("Name"))
                         {
                             continue Attributes;
                         }
 
-                        String name = ((TAG_String) ((TAG_Compound) attribute1).getValue().get("Name")).getValue();
+                        String name = ((TAG_String) ((TAG_Compound) attributeTag).getValue().get("Name")).getValue();
 
                         if (name.equalsIgnoreCase(attribute.getName()))
                         {
