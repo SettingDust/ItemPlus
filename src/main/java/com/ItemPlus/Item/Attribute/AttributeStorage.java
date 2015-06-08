@@ -84,7 +84,7 @@ public final class AttributeStorage
 
                         String name = ((TAG_String) ((TAG_Compound) attribute1).getValue().get("Name")).getValue();
 
-                        if (name.equals(attribute.getName()))
+                        if (name.equalsIgnoreCase(attribute.getName()))
                         {
                             continue Attributes;
                         }
