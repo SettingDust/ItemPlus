@@ -38,7 +38,6 @@ import org.bukkit.entity.Player;
  */
 public class TestCommands implements ItemExecutor
 {
-
     @ItemCommand(value = "nbt", comments = "nbt测试指令")
     public Boolean execute(CommandSender sender, final String[] args)
     {
@@ -103,7 +102,7 @@ public class TestCommands implements ItemExecutor
 
                                 AttributeStorage storage = new AttributeStorage(new ItemStack(player.getItemInHand()));
                                 storage.getAttributes().add(attribute);
-                                player.setItemInHand(storage.save());
+                                storage.save();
                                 player.sendMessage("成功添加属性！");
                                 return true;
                             }
