@@ -8,11 +8,6 @@
     <dependencies>
         <dependency>
             <groupId>com.ItemPlus</groupId>
-            <artifactId>Cauldron</artifactId>
-            <version>1.7.10</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ItemPlus</groupId>
             <artifactId>Vault</artifactId>
             <version>1.2.25-b333</version>
         </dependency>
