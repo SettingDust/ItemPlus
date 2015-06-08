@@ -63,6 +63,11 @@ public final class AttributeStorage
         {
             TAG_Compound tag = (TAG_Compound) item.getTag();
 
+            if (!tag.getValue().containsKey("AttributeModifiers"))
+            {
+                tag.getValue().put("AttributeModifiers", new TAG_List("AttributeModifiers", TAG_Compound.class, new ArrayList<TAG>()));
+            }
+
             List<TAG> attributes = ((TAG_List) tag.getValue().get("AttributeModifiers")).getValue();
 
             Attributes:
