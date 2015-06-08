@@ -32,7 +32,6 @@ import com.ItemPlus.NBT.TAG_List;
 import com.ItemPlus.NBT.TAG_Long;
 import com.ItemPlus.NBT.TAG_Short;
 import com.ItemPlus.NBT.TAG_String;
-import com.comphenix.protocol.utility.MinecraftReflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ public final class NBTReflectWritter
 
         try
         {
-            this.item = MinecraftReflection.getBukkitItemStack(item);
+            this.item = item;
             this.CRAFT_STACK = loader.loadClass(Reflector.getMinecraftPackageName() + ".inventory.CraftItemStack");
             this.CRAFT_HANDLE = this.reflect.getField(null, CRAFT_STACK, "handle");
 

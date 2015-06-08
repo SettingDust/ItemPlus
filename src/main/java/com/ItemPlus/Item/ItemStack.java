@@ -29,17 +29,28 @@ import java.util.logging.Level;
  * <p>
  * @author HotFlow
  */
-public class ItemStack extends org.bukkit.inventory.ItemStack
+public class ItemStack
 {
+    private final org.bukkit.inventory.ItemStack item;
 
     /**
      * 构造物品
      * <p>
-     * @param itemstack 物品
+     * @param item 物品
      */
-    public ItemStack(org.bukkit.inventory.ItemStack itemstack)
+    public ItemStack(org.bukkit.inventory.ItemStack item)
     {
-        super(itemstack);
+        this.item = item;
+    }
+
+    /**
+     * 获取Bukkit ItemStack
+     * <p>
+     * @return org.bukkit.inventory.ItemStack
+     */
+    public org.bukkit.inventory.ItemStack getCraftItemStack()
+    {
+        return this.item;
     }
 
     /**
@@ -51,7 +62,7 @@ public class ItemStack extends org.bukkit.inventory.ItemStack
     {
         try
         {
-            return new NBTReflectReader(this).getTag();
+            return new NBTReflectReader(this.item).getTag();
         }
         catch (Exception ex)
         {
@@ -70,7 +81,7 @@ public class ItemStack extends org.bukkit.inventory.ItemStack
     {
         try
         {
-            new NBTReflectWritter(this).writeTag(tag);
+            new NBTReflectWritter(this.item).writeTag(tag);
         }
         catch (Exception ex)
         {

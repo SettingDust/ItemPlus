@@ -55,11 +55,9 @@ public final class AttributeStorage
 
     /**
      * 保存属性
-     * <p>
-     * @return ItemStack
      */
     @SuppressWarnings("unchecked")
-    public ItemStack save()
+    public void save()
     {
         if (item.getTag() instanceof TAG_Compound)
         {
@@ -105,8 +103,6 @@ public final class AttributeStorage
 
             this.item.setTag(tag);
         }
-
-        return this.item;
     }
 
     /**
