@@ -26,6 +26,11 @@ import com.ItemPlus.Event.Plugin.PluginDisableEvent;
 import com.ItemPlus.Event.Plugin.PluginEnableEvent;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -39,6 +44,9 @@ public class ItemPlus extends JavaPlugin
     private static final CommandManager commandManager = new CommandManager();
     private static final PlayerManager playerManager = new PlayerManager();
     private static final TaskManager taskManager = new TaskManager();
+    private static Economy economyManager;
+    private static Permission permissionManager;
+    private static Chat chatManager;
 
     @Override
     public void onEnable()
@@ -139,5 +147,73 @@ public class ItemPlus extends JavaPlugin
     public static TaskManager getTaskManager()
     {
         return ItemPlus.taskManager;
+    }
+
+    /**
+     * 安装经济系统
+     * <p>
+     * @return Boolean
+     */
+    public static Boolean setupEconomy()
+    {
+        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null)
+        {
+            return false;
+        }
+
+        RegisteredServiceProvider economyProvider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+
+        if (economyProvider != null)
+        {
+            ItemPlus.economyManager = (Economy) economyProvider.getProvider();
+        }
+
+        return ItemPlus.economyManager != null;
+    }
+
+    /**
+     * 安装权限系统
+     * <p>
+     * @return Boolean
+     */
+    public static Boolean setupPermission()
+    {
+        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null)
+        {
+            return false;
+
+        }
+
+        RegisteredServiceProvider permissionProvider = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
+
+        if (permissionProvider != null)
+        {
+            ItemPlus.permissionManager = (Permission) permissionProvider.getProvider();
+        }
+
+        return ItemPlus.permissionManager != null;
+    }
+
+    /**
+     * 安装频道系统
+     * <p>
+     * @return Boolean
+     */
+    public static Boolean setupChat()
+    {
+        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null)
+        {
+            return false;
+
+        }
+
+        RegisteredServiceProvider chatProvider = Bukkit.getServer().getServicesManager().getRegistration(Chat.class);
+
+        if (chatProvider != null)
+        {
+            ItemPlus.chatManager = (Chat) chatProvider.getProvider();
+        }
+
+        return ItemPlus.chatManager != null;
     }
 }
