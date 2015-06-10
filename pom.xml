@@ -13,6 +13,11 @@
     </repositories>
     <dependencies>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>Spigot</artifactId>
+            <version>1.7.10-R0.2</version>
+        </dependency>
+        <dependency>
             <groupId>net.minecraftforge</groupId>
             <artifactId>Cauldron</artifactId>
             <version>1.7.10-1291</version>
@@ -26,11 +31,6 @@
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>3.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>Spigot</artifactId>
-            <version>1.7.10-R0.2</version>
         </dependency>
     </dependencies>
     <properties>
