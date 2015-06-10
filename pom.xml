@@ -5,22 +5,32 @@
     <artifactId>ItemPlus</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <repositories>
+        <repository>
+            <id>dead-war-repo</id>
+            <url>http://ci.dead-war.gq:8081/content/groups/public/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
-            <groupId>com.ItemPlus</groupId>
+            <groupId>net.minecraftforge</groupId>
+            <artifactId>Cauldron</artifactId>
+            <version>1.7.10-1291</version>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
             <artifactId>Vault</artifactId>
-            <version>1.2.25-b333</version>
+            <version>1.4.1</version>
         </dependency>
         <dependency>
-            <groupId>com.ItemPlus</groupId>
+            <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>3.3.1</version>
+            <version>3.4.0</version>
         </dependency>
         <dependency>
-            <groupId>com.ItemPlus</groupId>
-            <artifactId>Bukkit</artifactId>
-            <version>1.7.10</version>
-            <classifier>R0.1</classifier>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>Spigot</artifactId>
+            <version>1.7.10-R0.2</version>
         </dependency>
     </dependencies>
     <properties>
