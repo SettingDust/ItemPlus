@@ -67,9 +67,8 @@ public class ItemStack
         catch (Exception ex)
         {
             ItemPlus.logger.getLogger().log(Level.SEVERE, null, ex);
+            return null;
         }
-
-        return null;
     }
 
     /**

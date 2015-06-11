@@ -120,117 +120,122 @@ public final class NBTReflectReader
     @SuppressWarnings("unchecked")
     private TAG getTag(final String name, final Object value) throws Exception
     {
-        if (value instanceof Void)
+        if (value != null)
         {
-            return new TAG_End();
-        }
-        else if (value.getClass().getName().contains("NBTTagByte"))
-        {
-            return new TAG_Byte(name, new Byte(value.toString()));
-        }
-        else if (value.getClass().getName().contains("NBTTagShort"))
-        {
-            return new TAG_Short(name, new Short(value.toString().substring(0, value.toString().length() - 1)));
-        }
-        else if (value.getClass().getName().contains("NBTTagInt"))
-        {
-            return new TAG_Int(name, new Integer(value.toString()));
-        }
-        else if (value.getClass().getName().contains("NBTTagLong"))
-        {
-            return new TAG_Long(name, new Long(value.toString().substring(0, value.toString().length() - 1)));
-        }
-        else if (value.getClass().getName().contains("NBTTagFloat"))
-        {
-            return new TAG_Float(name, new Float(value.toString()));
-        }
-        else if (value.getClass().getName().contains("NBTTagDouble"))
-        {
-            return new TAG_Double(name, new Double(value.toString().substring(0, value.toString().length() - 1)));
-        }
-        else if (value.getClass().getName().contains("NBTTagByteArray"))
-        {
-            List<Byte> bs = new ArrayList<Byte>();
-
-            for (int i = 0; i < Array.getLength(value); i++)
+            if (value instanceof Void)
             {
-                bs.add((Byte) Array.get(value, i));
+                return new TAG_End();
             }
-
-            byte[] bytes = new byte[bs.size()];
-
-            for (int i = 0; i < bs.size(); i++)
+            else if (value.getClass().getName().contains("NBTTagByte"))
             {
-                bytes[i] = bs.get(i);
+                return new TAG_Byte(name, new Byte(value.toString()));
             }
-
-            return new TAG_Byte_Array(name, bytes);
-        }
-        else if (value.getClass().getName().contains("NBTTagString"))
-        {
-            return new TAG_String(name, value.toString().replace("\"\"", "\""));
-        }
-        else if (value.getClass().getName().contains("NBTTagList"))
-        {
-            final List<TAG> tagList = new ArrayList<TAG>();
-
-            String type = "type";
-
-            for (Field field : value.getClass().getDeclaredFields())
+            else if (value.getClass().getName().contains("NBTTagShort"))
             {
-                if (field.getName().equalsIgnoreCase("type") || field.getName().equalsIgnoreCase("field_74746_b"))
+                return new TAG_Short(name, new Short(value.toString().substring(0, value.toString().length() - 1)));
+            }
+            else if (value.getClass().getName().contains("NBTTagInt"))
+            {
+                return new TAG_Int(name, new Integer(value.toString()));
+            }
+            else if (value.getClass().getName().contains("NBTTagLong"))
+            {
+                return new TAG_Long(name, new Long(value.toString().substring(0, value.toString().length() - 1)));
+            }
+            else if (value.getClass().getName().contains("NBTTagFloat"))
+            {
+                return new TAG_Float(name, new Float(value.toString()));
+            }
+            else if (value.getClass().getName().contains("NBTTagDouble"))
+            {
+                return new TAG_Double(name, new Double(value.toString().substring(0, value.toString().length() - 1)));
+            }
+            else if (value.getClass().getName().contains("NBTTagByteArray"))
+            {
+                List<Byte> bs = new ArrayList<Byte>();
+
+                for (int i = 0; i < Array.getLength(value); i++)
                 {
-                    type = field.getName();
-                }
-            }
-
-            for (int i = 0; i < getDataList(value).size(); i++)
-            {
-                final TAG tag = getTag("", getDataList(value).get(i));
-
-                if (tag instanceof TAG_End)
-                {
-                    throw new Exception("TAG_End 不可存在于一个list内");
+                    bs.add((Byte) Array.get(value, i));
                 }
 
-                tagList.add(tag);
+                byte[] bytes = new byte[bs.size()];
+
+                for (int i = 0; i < bs.size(); i++)
+                {
+                    bytes[i] = bs.get(i);
+                }
+
+                return new TAG_Byte_Array(name, bytes);
             }
-
-            return new TAG_List(name, ISystem.getTypeClass((Byte) reflect.getFieldValue(getDataField(value, type), value)), tagList);
-        }
-        else if (value.getClass().getName().contains("NBTTagCompound"))
-        {
-            final Map<String, TAG> tagMap = new HashMap<String, TAG>();
-
-            for (String key : getDataMap(value).keySet())
+            else if (value.getClass().getName().contains("NBTTagString"))
             {
-                tagMap.put(key, getTag(key, getDataMap(value).get(key)));
+                return new TAG_String(name, value.toString().replace("\"\"", "\""));
             }
-
-            return new TAG_Compound(name, tagMap);
-        }
-        else if (value.getClass().getName().contains("NBTTagIntArray"))
-        {
-            List<Integer> ins = new ArrayList<Integer>();
-
-            for (int i = 0; i < Array.getLength(value); i++)
+            else if (value.getClass().getName().contains("NBTTagList"))
             {
-                ins.add((Integer) Array.get(value, i));
+                final List<TAG> tagList = new ArrayList<TAG>();
+
+                String type = "type";
+
+                for (Field field : value.getClass().getDeclaredFields())
+                {
+                    if (field.getName().equalsIgnoreCase("type") || field.getName().equalsIgnoreCase("field_74746_b"))
+                    {
+                        type = field.getName();
+                    }
+                }
+
+                for (int i = 0; i < getDataList(value).size(); i++)
+                {
+                    final TAG tag = getTag("", getDataList(value).get(i));
+
+                    if (tag instanceof TAG_End)
+                    {
+                        throw new Exception("TAG_End 不可存在于一个list内");
+                    }
+
+                    tagList.add(tag);
+                }
+
+                return new TAG_List(name, ISystem.getTypeClass((Byte) reflect.getFieldValue(getDataField(value, type), value)), tagList);
             }
-
-            int[] ints = new int[ins.size()];
-
-            for (int i = 0; i < ins.size(); i++)
+            else if (value.getClass().getName().contains("NBTTagCompound"))
             {
-                ints[i] = ins.get(i);
-            }
+                final Map<String, TAG> tagMap = new HashMap<String, TAG>();
 
-            return new TAG_Int_Array(name, ints);
+                for (String key : getDataMap(value).keySet())
+                {
+                    tagMap.put(key, getTag(key, getDataMap(value).get(key)));
+                }
+
+                return new TAG_Compound(name, tagMap);
+            }
+            else if (value.getClass().getName().contains("NBTTagIntArray"))
+            {
+                List<Integer> ins = new ArrayList<Integer>();
+
+                for (int i = 0; i < Array.getLength(value); i++)
+                {
+                    ins.add((Integer) Array.get(value, i));
+                }
+
+                int[] ints = new int[ins.size()];
+
+                for (int i = 0; i < ins.size(); i++)
+                {
+                    ints[i] = ins.get(i);
+                }
+
+                return new TAG_Int_Array(name, ints);
+            }
+            else
+            {
+                throw new Exception("NBT类型 " + value.getClass().getName() + " 不存在!");
+            }
         }
-        else
-        {
-            throw new Exception("NBT类型 " + value.getClass().getName() + " 不存在!");
-        }
+        
+        return null;
     }
 
     @SuppressWarnings("unchecked")
