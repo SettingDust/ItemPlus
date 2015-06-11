@@ -34,10 +34,10 @@ public abstract class Attribute
     /**
      * 构造抽象属性
      * <p>
-     * @param name 名字
+     * @param name      名字
      * @param operation 操作方式
-     * @param amount 值
-     * @param uuid uuid
+     * @param amount    值
+     * @param uuid      uuid
      */
     public Attribute(String name, int operation, double amount, UUID uuid)
     {
@@ -47,49 +47,84 @@ public abstract class Attribute
         this.uuid = uuid;
     }
 
+    /**
+     * 获取名称
+     * <p>
+     * @return String
+     */
     public String getName()
     {
         return this.name;
     }
 
+    /**
+     * 设置名称
+     * <p>
+     * @param name 名称
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * 获取操作方式
+     * <p>
+     * @return int
+     */
     public int getOperation()
     {
         return this.operation;
     }
 
+    /**
+     * 设置操作方式
+     * <p>
+     * @param operation 操作方式
+     */
     public void setOperation(int operation)
     {
         this.operation = operation;
     }
 
+    /**
+     * 获取数量
+     * <p>
+     * @return Double
+     */
     public Double getAmount()
     {
         return this.amount;
     }
 
+    /**
+     * 设置数量
+     * <p>
+     * @param amount 数量
+     */
     public void setAmount(Integer amount)
     {
         this.amount = amount;
     }
 
+    /**
+     * 获取UUID
+     * <p>
+     * @return UUID
+     */
     public UUID getUUID()
     {
         return this.uuid;
     }
 
+    /**
+     * 设置UUID
+     * <p>
+     * @param id UniqueID
+     */
     public void setUUID(UUID id)
     {
         this.uuid = id;
-    }
-
-    public Attribute getType()
-    {
-        return this;
     }
 
     public abstract String getTypeString();

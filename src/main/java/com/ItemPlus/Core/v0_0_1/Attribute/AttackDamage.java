@@ -18,47 +18,41 @@
 package com.ItemPlus.Core.v0_0_1.Attribute;
 
 import com.ItemPlus.Item.Attribute.Attribute;
-import com.ItemPlus.Item.Attribute.Attribute;
 import java.util.UUID;
 
 /**
- * 吸血属性
+ * 攻击伤害属性
  * <p>
  * @author HotFlow
  */
-public class LifeSteal extends Attribute
+public class AttackDamage extends Attribute
 {
     /**
-     * 构造吸血属性
+     * 构造攻击伤害属性
      * <p>
-     * @param name 名字
+     * @param name      名字
      * @param operation 操作方式
-     * @param amount 值
-     * @param uuid uuid
+     * @param amount    值
+     * @param uuid      uuid
      */
-    public LifeSteal(String name, int operation, int amount, UUID uuid)
+    public AttackDamage(String name, int operation, int amount, UUID uuid)
     {
         super(name, operation, amount, uuid);
     }
 
     /**
-     * 构造吸血属性
+     * 构造攻击伤害属性
      * <p>
-     * @param name 名字
+     * @param name  名字
      * @param level 等级
      */
-    public LifeSteal(String name, int level)
+    public AttackDamage(String name, int level)
     {
         super(name, 1, level, UUID.randomUUID());
     }
 
-    public Attribute getType()
-    {
-        return this;
-    }
-
     public String getTypeString()
     {
-        return "itemPlus.lifeSteal";
+        return "generic.attackDamage";
     }
 }
