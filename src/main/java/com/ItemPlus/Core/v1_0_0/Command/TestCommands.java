@@ -19,12 +19,8 @@ package com.ItemPlus.Core.v1_0_0.Command;
 
 import com.ItemPlus.CommandExecutor.ItemCommand;
 import com.ItemPlus.CommandExecutor.ItemExecutor;
-import com.ItemPlus.Core.v1_0_0.Utils.ISystem;
-import com.ItemPlus.Item.Attribute.Attribute;
-import com.ItemPlus.Item.Attribute.AttributeStorage;
 import com.ItemPlus.Item.ItemStack;
 import com.ItemPlus.NBT.TAG;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Material;
@@ -73,84 +69,5 @@ public class TestCommands implements ItemExecutor
         }
 
         return false;
-    }
-
-    @ItemCommand(value = "attributes", comments = "属性操作测试指令。")
-    public Boolean attributesExecute(CommandSender sender, final String[] args)
-    {
-        if (sender instanceof Player)
-        {
-            Player player = (Player) sender;
-            if (args.length > 0)
-            {
-                if (args[0].equalsIgnoreCase("add"))
-                {
-                    if (args.length > 3)
-                    {
-                        if (player.getItemInHand() != null && player.getItemInHand().getType() != Material.AIR)
-                        {
-                            if (ISystem.isInt(args[3]))
-                            {
-                                Attribute attribute = new Attribute(args[1], 0, Integer.parseInt(args[3]), UUID.randomUUID())
-                                {
-                                    @Override
-                                    public String getTypeString()
-                                    {
-                                        return args[2];
-                                    }
-                                };
-
-                                AttributeStorage storage = new AttributeStorage(new ItemStack(player.getItemInHand()));
-                                storage.getAttributes().add(attribute);
-                                storage.save();
-                                player.sendMessage("成功添加属性！");
-                                return true;
-                            }
-                            else
-                            {
-                                player.sendMessage("[值]必须为整数!");
-                                player.sendMessage("/ItemPlus attributes add [名字] [属性] [值]");
-                                return false;
-                            }
-                        }
-                        else
-                        {
-                            player.sendMessage("你的手上并没有任何东西!");
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        player.sendMessage("/ItemPlus attributes add [名字] [属性] [值]");
-                        return false;
-                    }
-                }
-                else
-                {
-                    player.sendMessage("/ItemPlus attribute <add|remove>");
-                    return false;
-                }
-            }
-            else
-            {
-                if (player.getItemInHand() != null && player.getItemInHand().getType() != Material.AIR)
-                {
-                    player.sendMessage("属性列表:");
-                    AttributeStorage storage = new AttributeStorage(new ItemStack(player.getItemInHand()));
-
-                    for (Attribute attribute : storage.getAttributes())
-                    {
-                        player.sendMessage(" - " + attribute.getName());
-                    }
-                    return true;
-                }
-                else
-                {
-                    player.sendMessage("你的手上并没有任何东西!");
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }

@@ -30,6 +30,7 @@ import com.ItemPlus.NBT.TAG_Long;
 import com.ItemPlus.NBT.TAG_Short;
 import com.ItemPlus.NBT.TAG_String;
 import com.ItemPlus.NBT.TAG;
+import java.math.BigDecimal;
 
 /**
  * 常用功能
@@ -52,6 +53,25 @@ public class ISystem
             return true;
         }
         catch (NumberFormatException ex)
+        {
+            return false;
+        }
+    }
+
+    /**
+     * 是否为数字
+     * <p>
+     * @param s 字符串
+     * @return Boolean
+     */
+    public static Boolean isNum(final String s)
+    {
+        try
+        {
+            new BigDecimal(s);
+            return true;
+        }
+        catch (Exception ex)
         {
             return false;
         }
