@@ -17,8 +17,8 @@
 
 package com.ItemPlus.Item;
 
-import com.ItemPlus.Core.v0_0_1.Reflect.NBTReflectReader;
-import com.ItemPlus.Core.v0_0_1.Reflect.NBTReflectWritter;
+import com.ItemPlus.Core.v1_0_0.Reflect.NBTReflectReader;
+import com.ItemPlus.Core.v1_0_0.Reflect.NBTReflectWritter;
 import com.ItemPlus.ItemPlus;
 import com.ItemPlus.NBT.TAG;
 import com.ItemPlus.NBT.TAG_Compound;

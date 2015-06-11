@@ -15,58 +15,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ItemPlus.Timer;
+package com.ItemPlus.Core.v1_0_0.Manager;
 
-import com.ItemPlus.Core.v1_0_0.TimerRunnable;
-import com.ItemPlus.ItemPlus;
+import java.util.logging.Logger;
 
 /**
- * 服务器计时器
+ * Logger管理器
  * <p>
  * @author HotFlow
  */
-public final class ServerTimer
+public final class LoggerManager
 {
-    private final TimerRunnable task;
-    private long time;
-
     /**
-     * 构造服务器计时器
-     */
-    public ServerTimer()
-    {
-        this.task = new TimerRunnable(ItemPlus.getPlugin(), this);
-        this.time = 0L;
-    }
-
-    /**
-     * 获取游戏时间
+     * 获取Logger
      * <p>
-     * @return long
+     * @return Logger
      */
-    public long getTime()
+    public Logger getLogger()
     {
-        return this.time;
+        return Logger.getLogger("ItemPlus");
     }
 
     /**
-     * 设置游戏时间
+     * 获取Logger
      * <p>
-     * @param second 秒
+     * @param name 名称
+     * @return Logger
      */
-    public void setTime(long second)
+    public Logger getLogger(String name)
     {
-        this.time = second;
+        return Logger.getLogger(name);
     }
 
     /**
-     * 获取时间执行器
+     * 获取Logger
      * <p>
-     * @return ServerRunnable
+     * @param name 名称
+     * @param resourceBundleName 资源包名称
+     * @return Logger
      */
-    public TimerRunnable getTimerRunnable()
+    public Logger getLogger(String name, String resourceBundleName)
     {
-        return this.task;
+        return Logger.getLogger(name, resourceBundleName);
     }
-
 }

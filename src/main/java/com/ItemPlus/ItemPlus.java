@@ -17,11 +17,11 @@
 
 package com.ItemPlus;
 
-import com.ItemPlus.Core.v0_0_1.LoggerHandler;
-import com.ItemPlus.Core.v0_0_1.Manager.CommandManager;
-import com.ItemPlus.Core.v0_0_1.Manager.LoggerManager;
-import com.ItemPlus.Core.v0_0_1.Manager.PlayerManager;
-import com.ItemPlus.Core.v0_0_1.Manager.TaskManager;
+import com.ItemPlus.Core.v1_0_0.LoggerHandler;
+import com.ItemPlus.Core.v1_0_0.Manager.CommandManager;
+import com.ItemPlus.Core.v1_0_0.Manager.LoggerManager;
+import com.ItemPlus.Core.v1_0_0.Manager.PlayerManager;
+import com.ItemPlus.Core.v1_0_0.Manager.TaskManager;
 import com.ItemPlus.Event.Plugin.PluginDisableEvent;
 import com.ItemPlus.Event.Plugin.PluginEnableEvent;
 import java.util.logging.Handler;
@@ -72,10 +72,10 @@ public class ItemPlus extends JavaPlugin
 
         });
 
-        getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v0_0_1.Listener.Listeners(), this);
+        getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Listener.Listeners(), this);
         getCommand("ItemPlus").setExecutor(new com.ItemPlus.CommandExecutor.ItemExecutorHandler());
-        ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v0_0_1.Command.PluginCommands());
-        ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v0_0_1.Command.TestCommands());
+        ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.PluginCommands());
+        ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.TestCommands());
     }
 
     @Override

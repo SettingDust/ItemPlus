@@ -15,58 +15,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ItemPlus.Timer;
+package com.ItemPlus.Core.v1_0_0.Attribute;
 
-import com.ItemPlus.Core.v1_0_0.TimerRunnable;
-import com.ItemPlus.ItemPlus;
+import com.ItemPlus.Item.Attribute.Attribute;
+import java.util.UUID;
 
 /**
- * 服务器计时器
+ * 最大血量属性
  * <p>
  * @author HotFlow
  */
-public final class ServerTimer
+public class MaxHealth extends Attribute
 {
-    private final TimerRunnable task;
-    private long time;
-
     /**
-     * 构造服务器计时器
-     */
-    public ServerTimer()
-    {
-        this.task = new TimerRunnable(ItemPlus.getPlugin(), this);
-        this.time = 0L;
-    }
-
-    /**
-     * 获取游戏时间
+     * 构造最大血量属性
      * <p>
-     * @return long
+     * @param name      名字
+     * @param operation 操作方式
+     * @param amount    值
+     * @param uuid      uuid
      */
-    public long getTime()
+    public MaxHealth(String name, int operation, int amount, UUID uuid)
     {
-        return this.time;
+        super(name, operation, amount, uuid);
     }
 
     /**
-     * 设置游戏时间
+     * 构造最大血量属性
      * <p>
-     * @param second 秒
+     * @param name  名字
+     * @param level 等级
      */
-    public void setTime(long second)
+    public MaxHealth(String name, int level)
     {
-        this.time = second;
+        super(name, 1, level, UUID.randomUUID());
     }
 
-    /**
-     * 获取时间执行器
-     * <p>
-     * @return ServerRunnable
-     */
-    public TimerRunnable getTimerRunnable()
+    public String getTypeString()
     {
-        return this.task;
+        return "generic.maxHealth";
     }
-
 }

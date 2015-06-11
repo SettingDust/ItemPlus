@@ -17,7 +17,7 @@
 
 package com.ItemPlus.Event.Player;
 
-import com.ItemPlus.Core.v0_0_1.Entity.ItemPlayer;
+import com.ItemPlus.Core.v1_0_0.Entity.ItemPlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
