@@ -26,13 +26,16 @@ import com.ItemPlus.Item.ItemStack;
 import com.ItemPlus.ItemPlus;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * 插件指令
@@ -132,6 +135,85 @@ public class PluginCommands implements ItemExecutor
         return true;
     }
 
+    @ItemCommand(value = "name", comments = "修改物品名字指令")
+    public Boolean nameCommand(CommandSender sender, final String[] args)
+    {
+        if (sender instanceof Player)
+        {
+            Player player = (Player) sender;
+            if (player.getItemInHand() != null && player.getItemInHand().getType() != Material.AIR)
+            {
+                if (args.length > 0)
+                {
+                    ItemMeta meta = player.getItemInHand().getItemMeta();
+                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
+                    player.getItemInHand().setItemMeta(meta);
+                    player.sendMessage("修改成功!");
+                    return true;
+                }
+
+                player.sendMessage("/ItemPlus name [名称]");
+                return false;
+            }
+            else
+            {
+                player.sendMessage("你的手上并没有任何东西!");
+                return false;
+            }
+        }
+        else
+        {
+            sender.sendMessage("该命令只能由玩家发出!");
+            return false;
+        }
+    }
+
+    @ItemCommand(value = "lore", comments = "修改物品Lore指令")
+    public Boolean loreCommand(CommandSender sender, final String[] args)
+    {
+        if (sender instanceof Player)
+        {
+            Player player = (Player) sender;
+            if (player.getItemInHand() != null && player.getItemInHand().getType() != Material.AIR)
+            {
+                if (args.length > 0)
+                {
+                    ItemMeta meta = player.getItemInHand().getItemMeta();
+                    List<String> lore = new ArrayList<String>();
+
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 1; i < args.length; i++)
+                    {
+                        sb.append(args[i]);
+                    }
+
+                    for (int i = 0; i < sb.toString().split("\\n").length; i++)
+                    {
+                        lore.add(ChatColor.translateAlternateColorCodes('&', sb.toString().split("\\n")[i]));
+                    }
+
+                    meta.setLore(lore);
+                    player.getItemInHand().setItemMeta(meta);
+                    player.sendMessage("修改成功!");
+                    return true;
+                }
+
+                player.sendMessage("/ItemPlus lore [名称]");
+                return false;
+            }
+            else
+            {
+                player.sendMessage("你的手上并没有任何东西!");
+                return false;
+            }
+        }
+        else
+        {
+            sender.sendMessage("该命令只能由玩家发出!");
+            return false;
+        }
+    }
+
     @ItemCommand(value = "attribute", comments = "属性功能指令。")
     public Boolean attributeCommand(CommandSender sender, final String[] args)
     {
@@ -173,7 +255,7 @@ public class PluginCommands implements ItemExecutor
 
                                 storage.getAttributes().add(attribute);
                                 storage.save();
-                                player.sendMessage("成功添加属性!");
+                                player.sendMessage("添加成功!");
                                 return true;
                             }
                             else
@@ -195,7 +277,7 @@ public class PluginCommands implements ItemExecutor
                                 {
                                     storage.getAttributes().remove(attribute);
                                     storage.save();
-                                    player.sendMessage("成功移除属性!");
+                                    player.sendMessage("移除成功!");
                                     return true;
                                 }
                             }
