@@ -17,6 +17,9 @@
 
 package com.ItemPlus.Core.v1_0_0.Script;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 /**
  * 脚本处理器
  * <p>
@@ -24,5 +27,16 @@ package com.ItemPlus.Core.v1_0_0.Script;
  */
 public class ScriptHandler
 {
-
+    /**
+     * 执行一段代码
+     * <p>
+     * @param code 代码
+     * @throws Exception
+     */
+    public static void run(String code) throws Exception
+    {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("javascript");
+        engine.eval(code);
+    }
 }

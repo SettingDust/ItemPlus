@@ -22,14 +22,23 @@ import com.ItemPlus.Core.v1_0_0.Manager.CommandManager;
 import com.ItemPlus.Core.v1_0_0.Manager.LoggerManager;
 import com.ItemPlus.Core.v1_0_0.Manager.PlayerManager;
 import com.ItemPlus.Core.v1_0_0.Manager.TaskManager;
+import com.ItemPlus.Core.v1_0_0.Script.ScriptHandler;
 import com.ItemPlus.Event.Plugin.PluginDisableEvent;
 import com.ItemPlus.Event.Plugin.PluginEnableEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,6 +56,24 @@ public class ItemPlus extends JavaPlugin
     private static Economy economyManager;
     private static Permission permissionManager;
     private static Chat chatManager;
+
+    public static void main(String[] args)
+    {
+        String nr = "\r\n";
+        String test = "if(\"s\" == \"s\")" + nr;
+        test += "{" + nr;
+        test += "    print(\"测试成功!\");" + nr;
+        test += "}";
+
+        try
+        {
+            ScriptHandler.run(test);
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(ItemPlus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public void onEnable()
@@ -76,6 +103,41 @@ public class ItemPlus extends JavaPlugin
         getCommand("ItemPlus").setExecutor(new com.ItemPlus.CommandExecutor.ItemExecutorHandler());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.PluginCommands());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.TestCommands());
+
+        File scripts = new File(getDataFolder(), "/scripts");
+
+        if (!scripts.exists())
+        {
+            scripts.mkdir();
+        }
+
+        try
+        {
+            File script = new File(scripts.getPath(), "/test.script");
+            BufferedReader reader = new BufferedReader(new FileReader(script));
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null)
+            {
+                sb.append(line).append("\r\n");
+            }
+            reader.close();
+
+            ScriptHandler.run(sb.toString());
+        }
+        catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(ItemPlus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(ItemPlus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(ItemPlus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Override
