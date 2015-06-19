@@ -23,6 +23,8 @@ import com.ItemPlus.ItemPlus;
 import com.ItemPlus.NBT.TAG;
 import com.ItemPlus.NBT.TAG_Compound;
 import java.util.logging.Level;
+import org.bukkit.ChatColor;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * 单个物品
@@ -41,6 +43,38 @@ public class ItemStack
     public ItemStack(org.bukkit.inventory.ItemStack item)
     {
         this.item = item;
+    }
+
+    /**
+     * 获取名称
+     * <p>
+     * @return String
+     */
+    public String getName()
+    {
+        return this.item.getItemMeta().getDisplayName();
+    }
+
+    /**
+     * 设置名称
+     * <p>
+     * @param name 名称
+     */
+    public void setName(String name)
+    {
+        ItemMeta meta = this.item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        this.item.setItemMeta(meta);
+    }
+
+    /**
+     * 获取物品
+     * <p>
+     * @return Item
+     */
+    public Item getItem()
+    {
+        return null;
     }
 
     /**
