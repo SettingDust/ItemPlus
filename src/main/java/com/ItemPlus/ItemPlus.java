@@ -17,6 +17,10 @@
 
 package com.ItemPlus;
 
+import com.ItemPlus.Core.v1_0_0.Attribute.AttackDamage;
+import com.ItemPlus.Core.v1_0_0.Attribute.KnockbackResistance;
+import com.ItemPlus.Core.v1_0_0.Attribute.MaxHealth;
+import com.ItemPlus.Core.v1_0_0.Attribute.MovementSpeed;
 import com.ItemPlus.Core.v1_0_0.LoggerHandler;
 import com.ItemPlus.Core.v1_0_0.Manager.CommandManager;
 import com.ItemPlus.Core.v1_0_0.Manager.LoggerManager;
@@ -25,11 +29,13 @@ import com.ItemPlus.Core.v1_0_0.Manager.TaskManager;
 import com.ItemPlus.Core.v1_0_0.Script.ScriptHandler;
 import com.ItemPlus.Event.Plugin.PluginDisableEvent;
 import com.ItemPlus.Event.Plugin.PluginEnableEvent;
+import com.ItemPlus.Item.Attribute.Attribute;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -52,6 +58,7 @@ public class ItemPlus extends JavaPlugin
     private static final CommandManager commandManager = new CommandManager();
     private static final PlayerManager playerManager = new PlayerManager();
     private static final TaskManager taskManager = new TaskManager();
+    private static final HashMap<String, Class<? extends Attribute>> attributes = new HashMap<String, Class<? extends Attribute>>();
     private static Economy economyManager;
     private static Permission permissionManager;
     private static Chat chatManager;
@@ -98,45 +105,14 @@ public class ItemPlus extends JavaPlugin
 
         });
 
+        ItemPlus.getAttributeManager().put("AttackDamage", AttackDamage.class);
+        ItemPlus.getAttributeManager().put("KnockbackResistance", KnockbackResistance.class);
+        ItemPlus.getAttributeManager().put("MaxHealth", MaxHealth.class);
+        ItemPlus.getAttributeManager().put("MovementSpeed", MovementSpeed.class);
         getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Listener.Listeners(), this);
         getCommand("ItemPlus").setExecutor(new com.ItemPlus.CommandExecutor.ItemExecutorHandler());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.PluginCommands());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.TestCommands());
-
-        File scripts = new File(getDataFolder(), "/scripts");
-
-        if (!scripts.exists())
-        {
-            scripts.mkdir();
-        }
-
-        try
-        {
-            File script = new File(scripts.getPath(), "/test.script");
-            BufferedReader reader = new BufferedReader(new FileReader(script));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null)
-            {
-                sb.append(line).append("\r\n");
-            }
-            reader.close();
-
-            ScriptHandler.run(sb.toString());
-        }
-        catch (FileNotFoundException ex)
-        {
-            Logger.getLogger(ItemPlus.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(ItemPlus.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (Exception ex)
-        {
-            Logger.getLogger(ItemPlus.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     @Override
@@ -208,6 +184,16 @@ public class ItemPlus extends JavaPlugin
     public static TaskManager getTaskManager()
     {
         return ItemPlus.taskManager;
+    }
+
+    /**
+     * 获取属性管理器
+     * <p>
+     * @return HashMap<String,Class<? extends Attribute>>
+     */
+    public static HashMap<String, Class<? extends Attribute>> getAttributeManager()
+    {
+        return ItemPlus.attributes;
     }
 
     /**

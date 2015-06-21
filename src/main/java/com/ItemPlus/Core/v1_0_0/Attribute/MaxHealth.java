@@ -35,20 +35,9 @@ public class MaxHealth extends Attribute
      * @param amount    值
      * @param uuid      uuid
      */
-    public MaxHealth(String name, int operation, int amount, UUID uuid)
+    public MaxHealth(String name, int operation, double amount, UUID uuid)
     {
         super(name, operation, amount, uuid);
-    }
-
-    /**
-     * 构造最大血量属性
-     * <p>
-     * @param name  名字
-     * @param level 等级
-     */
-    public MaxHealth(String name, int level)
-    {
-        super(name, 1, level, UUID.randomUUID());
     }
 
     public String getTypeString()

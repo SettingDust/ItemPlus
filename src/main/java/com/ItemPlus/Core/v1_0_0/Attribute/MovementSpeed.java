@@ -35,20 +35,9 @@ public class MovementSpeed extends Attribute
      * @param amount    值
      * @param uuid      uuid
      */
-    public MovementSpeed(String name, int operation, int amount, UUID uuid)
+    public MovementSpeed(String name, int operation, double amount, UUID uuid)
     {
         super(name, operation, amount, uuid);
-    }
-
-    /**
-     * 构造移动速度属性
-     * <p>
-     * @param name  名字
-     * @param level 等级
-     */
-    public MovementSpeed(String name, int level)
-    {
-        super(name, 1, level, UUID.randomUUID());
     }
 
     public String getTypeString()

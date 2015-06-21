@@ -35,20 +35,9 @@ public class AttackDamage extends Attribute
      * @param amount    值
      * @param uuid      uuid
      */
-    public AttackDamage(String name, int operation, int amount, UUID uuid)
+    public AttackDamage(String name, int operation, double amount, UUID uuid)
     {
         super(name, operation, amount, uuid);
-    }
-
-    /**
-     * 构造攻击伤害属性
-     * <p>
-     * @param name  名字
-     * @param level 等级
-     */
-    public AttackDamage(String name, int level)
-    {
-        super(name, 1, level, UUID.randomUUID());
     }
 
     public String getTypeString()

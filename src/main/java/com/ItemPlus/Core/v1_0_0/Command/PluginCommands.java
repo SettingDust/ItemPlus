@@ -25,12 +25,15 @@ import com.ItemPlus.Item.Attribute.AttributeStorage;
 import com.ItemPlus.Item.ItemStack;
 import com.ItemPlus.ItemPlus;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -67,7 +70,7 @@ public class PluginCommands implements ItemExecutor
                                     if (annotation.annotationType() == ItemCommand.class)
                                     {
                                         ItemCommand itemCommand = (ItemCommand) annotation;
-
+                                        
                                         Boolean existed = false;
                                         for (String c : cs.keySet())
                                         {
@@ -76,7 +79,7 @@ public class PluginCommands implements ItemExecutor
                                                 existed = true;
                                             }
                                         }
-
+                                        
                                         if (!existed)
                                         {
                                             cs.put(itemCommand.value(), itemCommand.comments());
@@ -89,7 +92,7 @@ public class PluginCommands implements ItemExecutor
                 }
             }
         }
-
+        
         if (args.length == 0 || !ISystem.isInt(args[0]))
         {
             int page = (cs.keySet().size() / 10);
@@ -107,7 +110,7 @@ public class PluginCommands implements ItemExecutor
         else
         {
             int page = (cs.keySet().size() / 10);
-
+            
             if (Integer.parseInt(args[0]) < 1)
             {
                 args[0] = "1";
@@ -116,10 +119,10 @@ public class PluginCommands implements ItemExecutor
             {
                 args[0] = String.valueOf((page < 1 ? 1 : ((cs.keySet().size() % 10) > 0 ? page + 1 : page)));
             }
-
+            
             sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "ItemPlus指令页: " + args[0] + "/" + (page < 1 ? 1 : ((cs.keySet().size() % 10) > 0 ? page + 1 : page)));
             int i = 0;
-
+            
             for (String c : cs.keySet())
             {
                 i++;
@@ -128,13 +131,13 @@ public class PluginCommands implements ItemExecutor
                     sender.sendMessage(ChatColor.GOLD + "/ItemPlus " + c + ": " + ChatColor.WHITE + cs.get(c));
                 }
             }
-
+            
             sender.sendMessage(ChatColor.RED + "请输入" + ChatColor.GOLD + "/ItemPlus help [页数] " + ChatColor.RED + "翻页。");
         }
-
+        
         return true;
     }
-
+    
     @ItemCommand(value = "name", comments = "修改物品名字指令")
     public Boolean nameCommand(CommandSender sender, final String[] args)
     {
@@ -145,13 +148,11 @@ public class PluginCommands implements ItemExecutor
             {
                 if (args.length > 0)
                 {
-                    ItemMeta meta = player.getItemInHand().getItemMeta();
-                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
-                    player.getItemInHand().setItemMeta(meta);
+                    new com.ItemPlus.Item.ItemStack(player.getItemInHand()).setName(args[0]);
                     player.sendMessage("修改成功!");
                     return true;
                 }
-
+                
                 player.sendMessage("/ItemPlus name [名称]");
                 return false;
             }
@@ -167,7 +168,7 @@ public class PluginCommands implements ItemExecutor
             return false;
         }
     }
-
+    
     @ItemCommand(value = "lore", comments = "修改物品Lore指令")
     public Boolean loreCommand(CommandSender sender, final String[] args)
     {
@@ -180,24 +181,24 @@ public class PluginCommands implements ItemExecutor
                 {
                     ItemMeta meta = player.getItemInHand().getItemMeta();
                     List<String> lore = new ArrayList<String>();
-
+                    
                     StringBuilder sb = new StringBuilder();
                     for (int i = 1; i < args.length; i++)
                     {
                         sb.append(args[i]);
                     }
-
+                    
                     for (int i = 0; i < sb.toString().split("\\n").length; i++)
                     {
                         lore.add(ChatColor.translateAlternateColorCodes('&', sb.toString().split("\\n")[i]));
                     }
-
+                    
                     meta.setLore(lore);
                     player.getItemInHand().setItemMeta(meta);
                     player.sendMessage("修改成功!");
                     return true;
                 }
-
+                
                 player.sendMessage("/ItemPlus lore [名称]");
                 return false;
             }
@@ -213,29 +214,42 @@ public class PluginCommands implements ItemExecutor
             return false;
         }
     }
-
+    
     @ItemCommand(value = "attribute", comments = "属性功能指令。")
     public Boolean attributeCommand(CommandSender sender, final String[] args)
     {
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-
+            
             if (player.getItemInHand() != null && player.getItemInHand().getType() != Material.AIR)
             {
                 AttributeStorage storage = new AttributeStorage(new ItemStack(player.getItemInHand()));
-
+                
                 if (args.length > 0)
                 {
                     if (args[0].equalsIgnoreCase("check"))
                     {
                         player.sendMessage("属性列表:");
-
+                        
                         for (Attribute attribute : storage.getAttributes())
                         {
-                            player.sendMessage(" - " + attribute.getName() + "(" + attribute.getTypeString() + ")");
+                            String type = attribute.getTypeString();
+                            
+                            for (String key : ItemPlus.getAttributeManager().keySet())
+                            {
+                                Class<? extends Attribute> clazz = ItemPlus.getAttributeManager().get(key);
+                                
+                                if (clazz == attribute.getClass())
+                                {
+                                    type = key;
+                                    break;
+                                }
+                            }
+                            
+                            player.sendMessage(" - " + attribute.getName() + "(" + type + ")");
                         }
-
+                        
                         return true;
                     }
                     else if (args[0].equalsIgnoreCase("add"))
@@ -244,26 +258,59 @@ public class PluginCommands implements ItemExecutor
                         {
                             if (ISystem.isNum(args[3]) && ISystem.isInt(args[4]))
                             {
-                                Attribute attribute = new Attribute(args[1], Integer.parseInt(args[4]), Double.parseDouble(args[3]), UUID.randomUUID())
+                                for (String key : ItemPlus.getAttributeManager().keySet())
                                 {
-                                    @Override
-                                    public String getTypeString()
+                                    if (key.equalsIgnoreCase(args[2]))
                                     {
-                                        return args[2];
+                                        Class<? extends Attribute> clazz = ItemPlus.getAttributeManager().get(key);
+                                        
+                                        try
+                                        {
+                                            storage.getAttributes().add(clazz.getConstructor(String.class, int.class, double.class, UUID.class).newInstance(args[1], Integer.parseInt(args[4]), Double.parseDouble(args[3]), UUID.randomUUID()));
+                                            storage.save();
+                                            player.sendMessage("添加成功!");
+                                            return true;
+                                        }
+                                        catch (NoSuchMethodException ex)
+                                        {
+                                            Logger.getLogger(PluginCommands.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        catch (SecurityException ex)
+                                        {
+                                            Logger.getLogger(PluginCommands.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        catch (InstantiationException ex)
+                                        {
+                                            Logger.getLogger(PluginCommands.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        catch (IllegalAccessException ex)
+                                        {
+                                            Logger.getLogger(PluginCommands.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        catch (IllegalArgumentException ex)
+                                        {
+                                            Logger.getLogger(PluginCommands.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        catch (InvocationTargetException ex)
+                                        {
+                                            Logger.getLogger(PluginCommands.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
                                     }
-                                };
-
-                                storage.getAttributes().add(attribute);
-                                storage.save();
-                                player.sendMessage("添加成功!");
-                                return true;
+                                }
+                                
+                                player.sendMessage("属性不存在!");
+                                for(String key : ItemPlus.getAttributeManager().keySet())
+                                {
+                                    player.sendMessage(key + ",");
+                                }
+                                return false;
                             }
                             else
                             {
                                 player.sendMessage("请按照格式发出命令!");
                             }
                         }
-
+                        
                         player.sendMessage("/ItemPlus attribute add [名字] [属性] [值] [操作方式]");
                         return false;
                     }
@@ -281,11 +328,11 @@ public class PluginCommands implements ItemExecutor
                                     return true;
                                 }
                             }
-
+                            
                             player.sendMessage("属性不存在!");
                             return false;
                         }
-
+                        
                         player.sendMessage("/ItemPlus attribute remove [名字]");
                         return false;
                     }
@@ -294,7 +341,7 @@ public class PluginCommands implements ItemExecutor
                         player.sendMessage("命令不存在!");
                     }
                 }
-
+                
                 player.sendMessage(ChatColor.GOLD + "/ItemPlus attribute check" + ": " + ChatColor.WHITE + "查看当前物品属性。");
                 player.sendMessage(ChatColor.GOLD + "/ItemPlus attribute add" + ": " + ChatColor.WHITE + "为当前物品添加属性。");
                 player.sendMessage(ChatColor.GOLD + "/ItemPlus attribute remove" + ": " + ChatColor.WHITE + "为当前物品移除属性。");
