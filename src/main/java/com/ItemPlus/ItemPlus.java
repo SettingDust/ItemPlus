@@ -17,11 +17,14 @@
 
 package com.ItemPlus;
 
+import com.ItemPlus.Core.v1_0_0.Ability.FireBall;
 import com.ItemPlus.Core.v1_0_0.Attribute.AttackDamage;
 import com.ItemPlus.Core.v1_0_0.Attribute.KnockbackResistance;
 import com.ItemPlus.Core.v1_0_0.Attribute.MaxHealth;
 import com.ItemPlus.Core.v1_0_0.Attribute.MovementSpeed;
 import com.ItemPlus.Core.v1_0_0.LoggerHandler;
+import com.ItemPlus.Core.v1_0_0.Manager.AbilityManager;
+import com.ItemPlus.Core.v1_0_0.Manager.AttributeManager;
 import com.ItemPlus.Core.v1_0_0.Manager.CommandManager;
 import com.ItemPlus.Core.v1_0_0.Manager.LoggerManager;
 import com.ItemPlus.Core.v1_0_0.Manager.PlayerManager;
@@ -29,13 +32,6 @@ import com.ItemPlus.Core.v1_0_0.Manager.TaskManager;
 import com.ItemPlus.Core.v1_0_0.Script.ScriptHandler;
 import com.ItemPlus.Event.Plugin.PluginDisableEvent;
 import com.ItemPlus.Event.Plugin.PluginEnableEvent;
-import com.ItemPlus.Item.Attribute.Attribute;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -58,7 +54,8 @@ public class ItemPlus extends JavaPlugin
     private static final CommandManager commandManager = new CommandManager();
     private static final PlayerManager playerManager = new PlayerManager();
     private static final TaskManager taskManager = new TaskManager();
-    private static final HashMap<String, Class<? extends Attribute>> attributes = new HashMap<String, Class<? extends Attribute>>();
+    private static final AbilityManager abilityManager = new AbilityManager();
+    private static final AttributeManager attributeManager = new AttributeManager();
     private static Economy economyManager;
     private static Permission permissionManager;
     private static Chat chatManager;
@@ -105,10 +102,11 @@ public class ItemPlus extends JavaPlugin
 
         });
 
-        ItemPlus.getAttributeManager().put("AttackDamage", AttackDamage.class);
-        ItemPlus.getAttributeManager().put("KnockbackResistance", KnockbackResistance.class);
-        ItemPlus.getAttributeManager().put("MaxHealth", MaxHealth.class);
-        ItemPlus.getAttributeManager().put("MovementSpeed", MovementSpeed.class);
+        ItemPlus.getAttributeManager().getAttributes().put("AttackDamage", AttackDamage.class);
+        ItemPlus.getAttributeManager().getAttributes().put("KnockbackResistance", KnockbackResistance.class);
+        ItemPlus.getAttributeManager().getAttributes().put("MaxHealth", MaxHealth.class);
+        ItemPlus.getAttributeManager().getAttributes().put("MovementSpeed", MovementSpeed.class);
+        ItemPlus.getAbilityManager().getAbilities().put("FireBall", FireBall.class);
         getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Listener.Listeners(), this);
         getCommand("ItemPlus").setExecutor(new com.ItemPlus.CommandExecutor.ItemExecutorHandler());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.PluginCommands());
@@ -187,13 +185,23 @@ public class ItemPlus extends JavaPlugin
     }
 
     /**
+     * 获取技能管理器
+     * <p>
+     * @return AbilityManager
+     */
+    public static AbilityManager getAbilityManager()
+    {
+        return ItemPlus.abilityManager;
+    }
+
+    /**
      * 获取属性管理器
      * <p>
-     * @return HashMap<String,Class<? extends Attribute>>
+     * @return AttributeManager
      */
-    public static HashMap<String, Class<? extends Attribute>> getAttributeManager()
+    public static AttributeManager getAttributeManager()
     {
-        return ItemPlus.attributes;
+        return ItemPlus.attributeManager;
     }
 
     /**

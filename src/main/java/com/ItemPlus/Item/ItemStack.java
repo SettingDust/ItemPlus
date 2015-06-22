@@ -66,6 +66,8 @@ public class ItemStack
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         this.item.setItemMeta(meta);
     }
+    
+    
 
     /**
      * 获取物品

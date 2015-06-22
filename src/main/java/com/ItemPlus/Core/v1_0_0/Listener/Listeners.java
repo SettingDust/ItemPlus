@@ -17,7 +17,12 @@
 
 package com.ItemPlus.Core.v1_0_0.Listener;
 
+import com.ItemPlus.Core.v1_0_0.Ability.FireBall;
+import java.util.ArrayList;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
  * 监听器
@@ -26,5 +31,10 @@ import org.bukkit.event.Listener;
  */
 public class Listeners implements Listener
 {
-
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event)
+    {
+        FireBall ball = new FireBall(event.getPlayer(), event.getPlayer().getEyeLocation(), 10, new ArrayList<Action>(), 10L, 10);
+        ball.run();
+    }
 }

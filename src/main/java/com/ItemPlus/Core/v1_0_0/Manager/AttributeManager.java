@@ -15,41 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ItemPlus.Item.Ability;
+package com.ItemPlus.Core.v1_0_0.Manager;
 
-import java.util.List;
-import org.bukkit.event.block.Action;
+import com.ItemPlus.Item.Attribute.Attribute;
+import java.util.HashMap;
 
 /**
- * 抽象技能
+ * 属性管理器
  * <p>
  * @author HotFlow
  */
-public interface Ability
+public final class AttributeManager
 {
-    /**
-     * 获取执行方法
-     * <p>
-     * @return List<Action>
-     */
-    public List<Action> getActions();
+    private final HashMap<String, Class<? extends Attribute>> attributes = new HashMap<String, Class<? extends Attribute>>();
 
     /**
-     * 获取冷却时间
+     * 获取全部属性
      * <p>
-     * @return long
+     * @return HashMap<String, Class<? extends Attribute>>
      */
-    public long getCooldown();
-
-    /**
-     * 获取耐久消耗
-     * <p>
-     * @return int
-     */
-    public int getDurabilityCast();
-
-    /**
-     * 触发内容
-     */
-    public abstract void run();
+    public HashMap<String, Class<? extends Attribute>> getAttributes()
+    {
+        return this.attributes;
+    }
 }
