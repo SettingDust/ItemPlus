@@ -32,6 +32,7 @@ import com.ItemPlus.Core.v1_0_0.Manager.TaskManager;
 import com.ItemPlus.Core.v1_0_0.Script.ScriptHandler;
 import com.ItemPlus.Event.Plugin.PluginDisableEvent;
 import com.ItemPlus.Event.Plugin.PluginEnableEvent;
+import java.io.IOException;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -42,6 +43,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 
 /**
  * @author HotFlow
@@ -111,6 +113,16 @@ public class ItemPlus extends JavaPlugin
         getCommand("ItemPlus").setExecutor(new com.ItemPlus.CommandExecutor.ItemExecutorHandler());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.PluginCommands());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.TestCommands());
+        
+        try
+        {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(ItemPlus.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
