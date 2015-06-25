@@ -17,48 +17,14 @@
 
 package com.ItemPlus.Item.Ability;
 
-import java.util.List;
-import org.bukkit.event.block.Action;
-
 /**
- * 抽象技能
+ * 目标类型
  * <p>
  * @author HotFlow
  */
-public interface Ability
+public enum AbilityType
 {
-    /**
-     * 获取技能类型
-     * <p>
-     * @return AbilityType
-     */
-    public AbilityType getAbilityType();
-
-    /**
-     * 获取执行方法
-     * <p>
-     * @return List<Action>
-     */
-    public List<Action> getActions();
-
-    /**
-     * 获取冷却时间
-     * <p>
-     * @return long
-     */
-    public long getCooldown();
-
-    /**
-     * 获取耐久消耗
-     * <p>
-     * @return int
-     */
-    public int getDurabilityCast();
-
-    /**
-     * 当发出技能时
-     * <p>
-     * @param info 技能信息
-     */
-    public abstract void onAbility(AbilityInfo info);
+    Self,
+    Entity,
+    Point;
 }

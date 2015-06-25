@@ -41,6 +41,7 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
@@ -109,7 +110,9 @@ public class ItemPlus extends JavaPlugin
         ItemPlus.getAttributeManager().getAttributes().put("MaxHealth", MaxHealth.class);
         ItemPlus.getAttributeManager().getAttributes().put("MovementSpeed", MovementSpeed.class);
         ItemPlus.getAbilityManager().getAbilities().put("FireBall", FireBall.class);
+        
         getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Listener.Listeners(), this);
+        
         getCommand("ItemPlus").setExecutor(new com.ItemPlus.CommandExecutor.ItemExecutorHandler());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.PluginCommands());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.TestCommands());

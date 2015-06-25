@@ -18,10 +18,13 @@
 package com.ItemPlus.Core.v1_0_0.Ability;
 
 import com.ItemPlus.Item.Ability.Ability;
+import com.ItemPlus.Item.Ability.AbilityInfo;
+import com.ItemPlus.Item.Ability.AbilityType;
+import com.ItemPlus.ItemPlus;
+import java.util.Collections;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 
 /**
@@ -29,10 +32,9 @@ import org.bukkit.event.block.Action;
  * <p>
  * @author HotFlow
  */
-public class FireBall implements Ability
+public final class FireBall implements Ability
 {
-    private final Player player;
-    private final Location to;
+    private Fireball ball;
     private final double damage;
     private final List<Action> actions;
     private final long cooldown;
@@ -41,27 +43,31 @@ public class FireBall implements Ability
     /**
      * 构造火球术
      * <p>
-     * @param player 玩家
-     * @param to 目标点
      * @param damage 伤害
      * @param actions 执行方法
      * @param cooldown 冷却
      * @param durabilityCast 耐久消耗
      */
-    public FireBall(Player player, Location to, double damage, List<Action> actions, long cooldown, int durabilityCast)
+    public FireBall(double damage, List<Action> actions, long cooldown, int durabilityCast)
     {
-        this.player = player;
-        this.to = to;
+        this.ball = null;
         this.damage = damage;
         this.actions = actions;
         this.cooldown = cooldown;
         this.durabilityCast = durabilityCast;
+        ItemPlus.getAbilityManager().getAbilityList().add(this);
+    }
+
+    @Override
+    public AbilityType getAbilityType()
+    {
+        return AbilityType.Point;
     }
 
     @Override
     public List<Action> getActions()
     {
-        return this.actions;
+        return Collections.unmodifiableList(this.actions);
     }
 
     @Override
@@ -78,13 +84,33 @@ public class FireBall implements Ability
 
     @Override
     @SuppressWarnings("deprecation")
-    public void run()
+    public void onAbility(AbilityInfo info)
     {
-        Location from = player.getLocation();
+        Location from = info.getPlayer().getLocation();
         from.setY(from.getY() + 1);
-        Fireball ball = player.getWorld().spawn(from, Fireball.class);
-        ball.setShooter(player);
-        ball.setDirection(from.subtract(to).getDirection());
+        this.ball = info.getPlayer().getWorld().spawn(from, Fireball.class);
+        this.ball.setShooter(info.getPlayer());
+        this.ball.setDirection(from.subtract(info.getLocation()).getDirection());
+    }
+
+    /**
+     * 获取伤害
+     * <p>
+     * @return double
+     */
+    public double getDamage()
+    {
+        return this.damage;
+    }
+
+    /**
+     * 获取火球
+     * <p>
+     * @return Fireball
+     */
+    public Fireball getFireball()
+    {
+        return this.ball;
     }
 
 }

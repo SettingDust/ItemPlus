@@ -18,10 +18,19 @@
 package com.ItemPlus.Core.v1_0_0.Listener;
 
 import com.ItemPlus.Core.v1_0_0.Ability.FireBall;
+import com.ItemPlus.Item.Ability.Ability;
+import com.ItemPlus.Item.Ability.AbilityInfo;
+import com.ItemPlus.Item.Ability.AbilityType;
+import com.ItemPlus.ItemPlus;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.bukkit.entity.Fireball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
@@ -34,7 +43,43 @@ public class Listeners implements Listener
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event)
     {
-        FireBall ball = new FireBall(event.getPlayer(), event.getPlayer().getEyeLocation(), 10, new ArrayList<Action>(), 10L, 10);
-        ball.run();
+        List actions = new ArrayList<Action>();
+        actions.add(event.getAction());
+        
+        FireBall ball = new FireBall(10, actions, 10L, 10);
+        
+        for (Action action : ball.getActions())
+        {
+            if (event.getAction() == action)
+            {
+                try
+                {
+                    ball.onAbility(new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation()));
+                }
+                catch (Exception ex)
+                {
+                    Logger.getLogger(Listeners.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                break;
+            }
+        }
+    }
+    
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
+    {
+        for (Ability ability : ItemPlus.getAbilityManager().getAbilityList())
+        {
+            if (ability instanceof FireBall)
+            {
+                if (event.getDamager() instanceof Fireball)
+                {
+                    event.setDamage(((FireBall) ability).getDamage());
+                    ItemPlus.getAbilityManager().getAbilityList().remove(ability);
+                    return;
+                }
+            }
+        }        
     }
 }
