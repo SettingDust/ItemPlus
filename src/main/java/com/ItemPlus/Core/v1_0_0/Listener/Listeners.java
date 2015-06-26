@@ -47,27 +47,15 @@ public class Listeners implements Listener
     @SuppressWarnings("unchecked")
     public void onPlayerInteract(PlayerInteractEvent event)
     {
-        List<Action> actions = new ArrayList<Action>();
-        actions.add(event.getAction());
+        FireBall ball = new FireBall(20, 5, 10L, 10);
 
-        @SuppressWarnings("unchecked")
-        FireBall ball = new FireBall(20, 5, actions, 10L, 10);
-
-        for (Action action : ball.getActions())
+        try
         {
-            if (event.getAction() == action)
-            {
-                try
-                {
-                    ball.onAbility(new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation()));
-                }
-                catch (Exception ex)
-                {
-                    Logger.getLogger(Listeners.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                break;
-            }
+            ball.onAbility(new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation()));
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(Listeners.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -94,7 +82,6 @@ public class Listeners implements Listener
 
                         Player player = (Player) ((FireBall) ability).getFireball().getShooter();
                         player.sendMessage("火球术对 " + (event.getEntity() instanceof Player ? ((Player) event.getEntity()).getName() : event.getEntityType().getName()) + " 造成 " + event.getDamage() + " 点 " + event.getCause().name() + " 伤害。");
-
                         return;
                     }
                 }

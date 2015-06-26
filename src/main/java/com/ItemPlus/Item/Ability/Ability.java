@@ -18,10 +18,7 @@
 package com.ItemPlus.Item.Ability;
 
 import com.ItemPlus.ItemPlus;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
-import org.bukkit.event.block.Action;
 
 /**
  * 抽象技能
@@ -30,7 +27,6 @@ import org.bukkit.event.block.Action;
  */
 public abstract class Ability
 {
-    private final List<Action> actions;
     private final long cooldown;
     private final int durabilityCast;
     private final UUID uuid;
@@ -38,27 +34,15 @@ public abstract class Ability
     /**
      * 构造技能
      * <p>
-     * @param actions 执行方法
      * @param cooldown 冷却
      * @param durabilityCast 耐久消耗
      */
-    public Ability(List<Action> actions, long cooldown, int durabilityCast)
+    public Ability(long cooldown, int durabilityCast)
     {
-        this.actions = actions;
         this.cooldown = cooldown;
         this.durabilityCast = durabilityCast;
         this.uuid = UUID.randomUUID();
         ItemPlus.getAbilityManager().getAbilityMap().put(this.uuid, this);
-    }
-
-    /**
-     * 获取执行方法
-     * <p>
-     * @return List<Action>
-     */
-    public List<Action> getActions()
-    {
-        return Collections.unmodifiableList(this.actions);
     }
 
     /**

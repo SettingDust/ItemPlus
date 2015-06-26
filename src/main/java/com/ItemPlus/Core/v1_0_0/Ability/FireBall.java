@@ -40,13 +40,12 @@ public final class FireBall extends Ability
      * <p>
      * @param damage 伤害
      * @param explodeDamage 爆炸伤害
-     * @param actions 执行方法
      * @param cooldown 冷却
      * @param durabilityCast 耐久消耗
      */
-    public FireBall(double damage, double explodeDamage, List<Action> actions, long cooldown, int durabilityCast)
+    public FireBall(double damage, double explodeDamage, long cooldown, int durabilityCast)
     {
-        super(actions, cooldown, durabilityCast);
+        super(cooldown, durabilityCast);
         this.ball = null;
         this.damage = damage;
         this.explodeDamage = explodeDamage;
