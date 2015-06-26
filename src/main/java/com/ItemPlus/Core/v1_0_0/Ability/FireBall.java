@@ -19,10 +19,8 @@ package com.ItemPlus.Core.v1_0_0.Ability;
 
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
-import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Fireball;
-import org.bukkit.event.block.Action;
 
 /**
  * 火球术，向前方发射一个火球
