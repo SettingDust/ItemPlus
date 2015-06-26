@@ -10,7 +10,9 @@
 * NBT支持库
   * 文件读写（完成）
   * 服务端反射读写（完成）
-* Protocol支持库（待工作）
+  * 自定义NBT （待工作）
 * MySql支持库
   * 更改为HashMap读写（待工作）
-* Attribute读写（工作中）
+* Attribute读写（完成）
+* Abilty支持库（工作中）
+* Script支持库（待工作）
