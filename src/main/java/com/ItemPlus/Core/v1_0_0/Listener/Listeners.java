@@ -18,6 +18,8 @@
 package com.ItemPlus.Core.v1_0_0.Listener;
 
 import com.ItemPlus.Core.v1_0_0.Ability.FireBall;
+import com.ItemPlus.Event.Item.Ability.AbilityEffectEvent;
+import com.ItemPlus.Event.Item.Ability.AbilitySpellEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
 import com.ItemPlus.Item.Ability.AbilityType;
@@ -44,11 +46,10 @@ public class Listeners implements Listener
     @SuppressWarnings("unchecked")
     public void onPlayerInteract(PlayerInteractEvent event)
     {
-        FireBall ball = new FireBall(20, 5, 10L, 10);
-
         try
         {
-            ball.onAbility(new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation()));
+            FireBall ball = new FireBall(20, 5, new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation()), 10L, 10);
+            ball.onSpell();
         }
         catch (Exception ex)
         {
@@ -67,10 +68,18 @@ public class Listeners implements Listener
                 {
                     if (event.getDamager().getUniqueId().equals(((FireBall) ability).getFireball().getUniqueId()))
                     {
+                        AbilityEffectEvent evenz = new AbilityEffectEvent(ability);
+
+                        if (evenz.isCancelled())
+                        {
+                            event.setCancelled(true);
+                            return;
+                        }
+                        
                         if (event.getCause().equals(DamageCause.PROJECTILE))
                         {
                             event.setDamage(((FireBall) ability).getDamage());
-                            ability.delete();
+                            ability.onEnded();
                         }
                         else if (event.getCause().equals(DamageCause.ENTITY_EXPLOSION))
                         {
@@ -97,7 +106,7 @@ public class Listeners implements Listener
                 {
                     if (event.getEntity().getUniqueId().equals(((FireBall) ability).getFireball().getUniqueId()))
                     {
-                        ability.delete();
+                        ability.onEnded();
                     }
                 }
             }

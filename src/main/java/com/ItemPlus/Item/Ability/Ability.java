@@ -27,6 +27,7 @@ import java.util.UUID;
  */
 public abstract class Ability
 {
+    private final AbilityInfo info;
     private final long cooldown;
     private final int durabilityCast;
     private final UUID uuid;
@@ -34,15 +35,26 @@ public abstract class Ability
     /**
      * 构造技能
      * <p>
+     * @param info 技能信息
      * @param cooldown 冷却
      * @param durabilityCast 耐久消耗
      */
-    public Ability(long cooldown, int durabilityCast)
+    public Ability(AbilityInfo info, long cooldown, int durabilityCast)
     {
+        this.info = info;
         this.cooldown = cooldown;
         this.durabilityCast = durabilityCast;
         this.uuid = UUID.randomUUID();
-        ItemPlus.getAbilityManager().getAbilityMap().put(this.uuid, this);
+    }
+
+    /**
+     * 获取技能信息
+     * <p>
+     * @return AbilityInfo
+     */
+    public AbilityInfo getAbilityInfo()
+    {
+        return this.info;
     }
 
     /**
@@ -70,23 +82,18 @@ public abstract class Ability
      * <p>
      * @return UUID
      */
-    public UUID getUniqueID()
+    public UUID getUniqueId()
     {
         return this.uuid;
     }
 
     /**
-     * 删除技能(技能结束后必须呼出)
+     * 当技能施法时
      */
-    public void delete()
-    {
-        ItemPlus.getAbilityManager().getAbilityMap().remove(this.uuid);
-    }
+    public abstract void onSpell();
 
     /**
-     * 当发出技能时
-     * <p>
-     * @param info 技能信息
+     * 当技能结束时
      */
-    public abstract void onAbility(AbilityInfo info);
+    public abstract void onEnded();
 }
