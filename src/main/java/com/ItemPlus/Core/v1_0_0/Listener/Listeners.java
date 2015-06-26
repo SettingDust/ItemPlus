@@ -19,7 +19,6 @@ package com.ItemPlus.Core.v1_0_0.Listener;
 
 import com.ItemPlus.Core.v1_0_0.Ability.FireBall;
 import com.ItemPlus.Event.Item.Ability.AbilityEffectEvent;
-import com.ItemPlus.Event.Item.Ability.AbilitySpellEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
 import com.ItemPlus.Item.Ability.AbilityType;

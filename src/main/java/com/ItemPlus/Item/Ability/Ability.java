@@ -17,7 +17,6 @@
 
 package com.ItemPlus.Item.Ability;
 
-import com.ItemPlus.ItemPlus;
 import java.util.UUID;
 
 /**

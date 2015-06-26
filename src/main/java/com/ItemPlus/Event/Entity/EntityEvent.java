@@ -17,12 +17,27 @@
 
 package com.ItemPlus.Event.Entity;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.event.HandlerList;
+
 /**
  * 生物事件
  * <p>
  * @author HotFlow
  */
-public class EntityEvent
+public class EntityEvent extends org.bukkit.event.entity.EntityEvent
 {
+    private static final HandlerList handlers = new HandlerList();
+
+    public EntityEvent(Entity entity)
+    {
+        super(entity);
+    }
+
+    @Override
+    public HandlerList getHandlers()
+    {
+        return handlers;
+    }
 
 }
