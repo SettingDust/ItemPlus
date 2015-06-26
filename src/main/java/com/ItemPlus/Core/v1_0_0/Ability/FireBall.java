@@ -19,7 +19,6 @@ package com.ItemPlus.Core.v1_0_0.Ability;
 
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
-import com.ItemPlus.ItemPlus;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Fireball;
@@ -34,20 +33,23 @@ public final class FireBall extends Ability
 {
     private Fireball ball;
     private final double damage;
+    private final double explodeDamage;
 
     /**
      * 构造火球术
      * <p>
      * @param damage 伤害
+     * @param explodeDamage 爆炸伤害
      * @param actions 执行方法
      * @param cooldown 冷却
      * @param durabilityCast 耐久消耗
      */
-    public FireBall(double damage, List<Action> actions, long cooldown, int durabilityCast)
+    public FireBall(double damage, double explodeDamage, List<Action> actions, long cooldown, int durabilityCast)
     {
         super(actions, cooldown, durabilityCast);
         this.ball = null;
         this.damage = damage;
+        this.explodeDamage = explodeDamage;
     }
 
     @Override
@@ -69,6 +71,16 @@ public final class FireBall extends Ability
     public double getDamage()
     {
         return this.damage;
+    }
+
+    /**
+     * 获取爆炸伤害
+     * <p>
+     * @return double
+     */
+    public double getExplodeDamage()
+    {
+        return this.explodeDamage;
     }
 
     /**

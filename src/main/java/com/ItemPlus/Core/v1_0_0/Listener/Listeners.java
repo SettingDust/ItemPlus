@@ -27,10 +27,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
@@ -46,10 +49,10 @@ public class Listeners implements Listener
     {
         List<Action> actions = new ArrayList<Action>();
         actions.add(event.getAction());
-        
+
         @SuppressWarnings("unchecked")
-        FireBall ball = new FireBall(10, actions, 10L, 10);
-        
+        FireBall ball = new FireBall(20, 5, actions, 10L, 10);
+
         for (Action action : ball.getActions())
         {
             if (event.getAction() == action)
@@ -62,12 +65,12 @@ public class Listeners implements Listener
                 {
                     Logger.getLogger(Listeners.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 break;
             }
         }
     }
-    
+
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
@@ -77,11 +80,43 @@ public class Listeners implements Listener
             {
                 if (event.getDamager() instanceof Fireball)
                 {
-                    event.setDamage(((FireBall) ability).getDamage());
-                    ability.delete();
-                    return;
+                    if (event.getDamager().getUniqueId().equals(((FireBall) ability).getFireball().getUniqueId()))
+                    {
+                        if (event.getCause().equals(DamageCause.PROJECTILE))
+                        {
+                            event.setDamage(((FireBall) ability).getDamage());
+                            ability.delete();
+                        }
+                        else if (event.getCause().equals(DamageCause.ENTITY_EXPLOSION))
+                        {
+                            event.setDamage(((FireBall) ability).getExplodeDamage());
+                        }
+
+                        Player player = (Player) ((FireBall) ability).getFireball().getShooter();
+                        player.sendMessage("火球术对 " + (event.getEntity() instanceof Player ? ((Player) event.getEntity()).getName() : event.getEntityType().getName()) + " 造成 " + event.getDamage() + " 点 " + event.getCause().name() + " 伤害。");
+
+                        return;
+                    }
                 }
             }
-        }        
+        }
+    }
+
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event)
+    {
+        for (Ability ability : ItemPlus.getAbilityManager().getAbilityMap().values())
+        {
+            if (ability instanceof FireBall)
+            {
+                if (event.getEntity() instanceof Fireball)
+                {
+                    if (event.getEntity().getUniqueId().equals(((FireBall) ability).getFireball().getUniqueId()))
+                    {
+                        ability.delete();
+                    }
+                }
+            }
+        }
     }
 }
