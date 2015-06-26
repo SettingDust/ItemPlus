@@ -18,9 +18,8 @@
 package com.ItemPlus.Core.v1_0_0.Manager;
 
 import com.ItemPlus.Item.Ability.Ability;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.UUID;
 
 /**
  * 技能管理器
@@ -30,7 +29,7 @@ import java.util.List;
 public final class AbilityManager
 {
     private final HashMap<String, Class<? extends Ability>> abilities = new HashMap<String, Class<? extends Ability>>();
-    private final List<Ability> abilityList = new ArrayList<Ability>();
+    private final HashMap<UUID, Ability> abilityMap = new HashMap<UUID, Ability>();
 
     /**
      * 获取所有技能
@@ -45,10 +44,10 @@ public final class AbilityManager
     /**
      * 获取存在的技能列表
      * <p>
-     * @return <Ability>
+     * @return HashMap<UUID, Ability>
      */
-    public List<Ability> getAbilityList()
+    public HashMap<UUID, Ability> getAbilityMap()
     {
-        return this.abilityList;
+        return this.abilityMap;
     }
 }

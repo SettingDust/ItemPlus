@@ -41,11 +41,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class Listeners implements Listener
 {
     @EventHandler
+    @SuppressWarnings("unchecked")
     public void onPlayerInteract(PlayerInteractEvent event)
     {
-        List actions = new ArrayList<Action>();
+        List<Action> actions = new ArrayList<Action>();
         actions.add(event.getAction());
         
+        @SuppressWarnings("unchecked")
         FireBall ball = new FireBall(10, actions, 10L, 10);
         
         for (Action action : ball.getActions())
@@ -69,14 +71,14 @@ public class Listeners implements Listener
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
-        for (Ability ability : ItemPlus.getAbilityManager().getAbilityList())
+        for (Ability ability : ItemPlus.getAbilityManager().getAbilityMap().values())
         {
             if (ability instanceof FireBall)
             {
                 if (event.getDamager() instanceof Fireball)
                 {
                     event.setDamage(((FireBall) ability).getDamage());
-                    ItemPlus.getAbilityManager().getAbilityList().remove(ability);
+                    ability.delete();
                     return;
                 }
             }

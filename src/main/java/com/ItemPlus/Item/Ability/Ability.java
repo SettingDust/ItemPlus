@@ -17,7 +17,10 @@
 
 package com.ItemPlus.Item.Ability;
 
+import com.ItemPlus.ItemPlus;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import org.bukkit.event.block.Action;
 
 /**
@@ -25,35 +28,76 @@ import org.bukkit.event.block.Action;
  * <p>
  * @author HotFlow
  */
-public interface Ability
+public abstract class Ability
 {
+    private final List<Action> actions;
+    private final long cooldown;
+    private final int durabilityCast;
+    private final UUID uuid;
+
     /**
-     * 获取技能类型
+     * 构造技能
      * <p>
-     * @return AbilityType
+     * @param actions 执行方法
+     * @param cooldown 冷却
+     * @param durabilityCast 耐久消耗
      */
-    public AbilityType getAbilityType();
+    public Ability(List<Action> actions, long cooldown, int durabilityCast)
+    {
+        this.actions = actions;
+        this.cooldown = cooldown;
+        this.durabilityCast = durabilityCast;
+        this.uuid = UUID.randomUUID();
+        ItemPlus.getAbilityManager().getAbilityMap().put(this.uuid, this);
+    }
 
     /**
      * 获取执行方法
      * <p>
      * @return List<Action>
      */
-    public List<Action> getActions();
+    public List<Action> getActions()
+    {
+        return Collections.unmodifiableList(this.actions);
+    }
 
     /**
      * 获取冷却时间
      * <p>
      * @return long
      */
-    public long getCooldown();
+    public long getCooldown()
+    {
+        return this.cooldown;
+    }
 
     /**
      * 获取耐久消耗
      * <p>
      * @return int
      */
-    public int getDurabilityCast();
+    public int getDurabilityCast()
+    {
+        return this.durabilityCast;
+    }
+
+    /**
+     * 获取UUID
+     * <p>
+     * @return UUID
+     */
+    public UUID getUniqueID()
+    {
+        return this.uuid;
+    }
+
+    /**
+     * 删除技能(技能结束后必须呼出)
+     */
+    public void delete()
+    {
+        ItemPlus.getAbilityManager().getAbilityMap().remove(this.uuid);
+    }
 
     /**
      * 当发出技能时

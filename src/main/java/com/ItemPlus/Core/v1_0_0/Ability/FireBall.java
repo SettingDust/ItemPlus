@@ -19,9 +19,7 @@ package com.ItemPlus.Core.v1_0_0.Ability;
 
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
-import com.ItemPlus.Item.Ability.AbilityType;
 import com.ItemPlus.ItemPlus;
-import java.util.Collections;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Fireball;
@@ -32,13 +30,10 @@ import org.bukkit.event.block.Action;
  * <p>
  * @author HotFlow
  */
-public final class FireBall implements Ability
+public final class FireBall extends Ability
 {
     private Fireball ball;
     private final double damage;
-    private final List<Action> actions;
-    private final long cooldown;
-    private final int durabilityCast;
 
     /**
      * 构造火球术
@@ -50,36 +45,9 @@ public final class FireBall implements Ability
      */
     public FireBall(double damage, List<Action> actions, long cooldown, int durabilityCast)
     {
+        super(actions, cooldown, durabilityCast);
         this.ball = null;
         this.damage = damage;
-        this.actions = actions;
-        this.cooldown = cooldown;
-        this.durabilityCast = durabilityCast;
-        ItemPlus.getAbilityManager().getAbilityList().add(this);
-    }
-
-    @Override
-    public AbilityType getAbilityType()
-    {
-        return AbilityType.Point;
-    }
-
-    @Override
-    public List<Action> getActions()
-    {
-        return Collections.unmodifiableList(this.actions);
-    }
-
-    @Override
-    public long getCooldown()
-    {
-        return this.cooldown;
-    }
-
-    @Override
-    public int getDurabilityCast()
-    {
-        return this.durabilityCast;
     }
 
     @Override
@@ -112,5 +80,4 @@ public final class FireBall implements Ability
     {
         return this.ball;
     }
-
 }
