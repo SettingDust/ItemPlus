@@ -18,6 +18,7 @@
 package com.ItemPlus.Core.v1_0_0.Listener;
 
 import com.ItemPlus.Core.v1_0_0.Ability.FireBall;
+import com.ItemPlus.Event.Item.Ability.AbilityDamageEntityEvent;
 import com.ItemPlus.Event.Item.Ability.AbilityEffectEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
@@ -25,8 +26,8 @@ import com.ItemPlus.Item.Ability.AbilityType;
 import com.ItemPlus.ItemPlus;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static org.bukkit.Bukkit.getServer;
 import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -74,19 +75,37 @@ public class Listeners implements Listener
                             event.setCancelled(true);
                             return;
                         }
-                        
+
                         if (event.getCause().equals(DamageCause.PROJECTILE))
                         {
+                            AbilityDamageEntityEvent evenz1 = new AbilityDamageEntityEvent(ability, event.getEntity(), ((FireBall) ability).getDamage());
+                            getServer().getPluginManager().callEvent(evenz1);
+
+                            if (evenz1.isCancelled())
+                            {
+                                event.setCancelled(true);
+                                return;
+                            }
+
                             event.setDamage(((FireBall) ability).getDamage());
                             ability.onEnded();
+                            return;
                         }
                         else if (event.getCause().equals(DamageCause.ENTITY_EXPLOSION))
                         {
+                            AbilityDamageEntityEvent evenz1 = new AbilityDamageEntityEvent(ability, event.getEntity(), ((FireBall) ability).getExplodeDamage());
+                            getServer().getPluginManager().callEvent(evenz1);
+
+                            if (evenz1.isCancelled())
+                            {
+                                event.setCancelled(true);
+                                return;
+                            }
+
                             event.setDamage(((FireBall) ability).getExplodeDamage());
+                            return;
                         }
 
-                        Player player = (Player) ((FireBall) ability).getFireball().getShooter();
-                        player.sendMessage("火球术对 " + (event.getEntity() instanceof Player ? ((Player) event.getEntity()).getName() : event.getEntityType().getName()) + " 造成 " + event.getDamage() + " 点 " + event.getCause().name() + " 伤害。");
                         return;
                     }
                 }
@@ -106,6 +125,7 @@ public class Listeners implements Listener
                     if (event.getEntity().getUniqueId().equals(((FireBall) ability).getFireball().getUniqueId()))
                     {
                         ability.onEnded();
+                        return;
                     }
                 }
             }

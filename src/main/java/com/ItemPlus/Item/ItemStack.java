@@ -19,9 +19,13 @@ package com.ItemPlus.Item;
 
 import com.ItemPlus.Core.v1_0_0.Reflect.NBTReflectReader;
 import com.ItemPlus.Core.v1_0_0.Reflect.NBTReflectWritter;
+import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.ItemPlus;
 import com.ItemPlus.NBT.TAG;
 import com.ItemPlus.NBT.TAG_Compound;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -34,6 +38,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class ItemStack
 {
     private final org.bukkit.inventory.ItemStack item;
+    private final List<Ability> abilities = new ArrayList<Ability>();
 
     /**
      * 构造物品
@@ -66,8 +71,6 @@ public class ItemStack
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         this.item.setItemMeta(meta);
     }
-    
-    
 
     /**
      * 获取物品
@@ -122,5 +125,15 @@ public class ItemStack
         {
             ItemPlus.logger.getLogger().log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * 获取技能列表
+     * <p>
+     * @return List<Ability>
+     */
+    public List<Ability> getAbilityList()
+    {
+        return this.abilities;
     }
 }
