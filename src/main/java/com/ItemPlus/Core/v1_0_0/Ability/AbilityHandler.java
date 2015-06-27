@@ -17,17 +17,12 @@
 
 package com.ItemPlus.Core.v1_0_0.Ability;
 
-import com.ItemPlus.Core.v1_0_0.Listener.Listeners;
 import com.ItemPlus.Event.Item.Ability.AbilityDamageEntityEvent;
 import com.ItemPlus.Event.Item.Ability.AbilityEffectEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
 import com.ItemPlus.Item.Ability.AbilityType;
-import com.ItemPlus.Item.Ability.Buff.Buff;
-import com.ItemPlus.Item.Ability.Buff.BuffInfo;
 import com.ItemPlus.ItemPlus;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.bukkit.Bukkit.getServer;
@@ -66,7 +61,7 @@ public final class AbilityHandler implements Listener
         }
         catch (Exception ex)
         {
-            Logger.getLogger(Listeners.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AbilityHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

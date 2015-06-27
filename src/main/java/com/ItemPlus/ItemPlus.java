@@ -53,7 +53,7 @@ public class ItemPlus extends JavaPlugin
 {
     private static ItemPlus plugin;
     private final static String prefix = "[ItemPlus] ";
-    private static final ServerTimer timer = new ServerTimer();
+    private static ServerTimer timer;
     public static final LoggerManager logger = new LoggerManager();
     private static final CommandManager commandManager = new CommandManager();
     private static final PlayerManager playerManager = new PlayerManager();
@@ -107,6 +107,7 @@ public class ItemPlus extends JavaPlugin
 
         });
 
+        ItemPlus.timer = new ServerTimer();
         ItemPlus.getServerTimer().getTimerRunnable().start();
 
         ItemPlus.getAttributeManager().getAttributes().put("AttackDamage", AttackDamage.class);
