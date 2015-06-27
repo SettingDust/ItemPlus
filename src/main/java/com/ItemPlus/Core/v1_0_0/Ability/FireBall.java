@@ -27,7 +27,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Fireball;
 
 /**
- * 火球术，向前方发射一个火球
+ * 火球术
+ * <p>
+ * 向前方释放一颗火球，对目标位置造成爆炸伤害。
  * <p>
  * @author HotFlow
  */
@@ -79,7 +81,7 @@ public final class FireBall extends Ability
     public void onEnded()
     {
         ItemPlus.getAbilityManager().getAbilityMap().remove(this.getUniqueId());
-        
+
         AbilityEndedEvent event = new AbilityEndedEvent(this);
         getServer().getPluginManager().callEvent(event);
     }
