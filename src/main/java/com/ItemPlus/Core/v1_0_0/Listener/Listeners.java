@@ -17,23 +17,7 @@
 
 package com.ItemPlus.Core.v1_0_0.Listener;
 
-import com.ItemPlus.Core.v1_0_0.Ability.FireBall;
-import com.ItemPlus.Event.Item.Ability.AbilityDamageEntityEvent;
-import com.ItemPlus.Event.Item.Ability.AbilityEffectEvent;
-import com.ItemPlus.Item.Ability.Ability;
-import com.ItemPlus.Item.Ability.AbilityInfo;
-import com.ItemPlus.Item.Ability.AbilityType;
-import com.ItemPlus.ItemPlus;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static org.bukkit.Bukkit.getServer;
-import org.bukkit.entity.Fireball;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
  * 监听器
@@ -42,93 +26,5 @@ import org.bukkit.event.player.PlayerInteractEvent;
  */
 public class Listeners implements Listener
 {
-    @EventHandler
-    @SuppressWarnings("unchecked")
-    public void onPlayerInteract(PlayerInteractEvent event)
-    {
-        try
-        {
-            FireBall ball = new FireBall(20, 5, new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation()), 10L, 10);
-            ball.onSpell();
-        }
-        catch (Exception ex)
-        {
-            Logger.getLogger(Listeners.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
-    @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
-    {
-        for (Ability ability : ItemPlus.getAbilityManager().getAbilityMap().values())
-        {
-            if (ability instanceof FireBall)
-            {
-                if (event.getDamager() instanceof Fireball)
-                {
-                    if (event.getDamager().getUniqueId().equals(((FireBall) ability).getFireball().getUniqueId()))
-                    {
-                        AbilityEffectEvent evenz = new AbilityEffectEvent(ability);
-
-                        if (evenz.isCancelled())
-                        {
-                            event.setCancelled(true);
-                            return;
-                        }
-
-                        if (event.getCause().equals(DamageCause.PROJECTILE))
-                        {
-                            AbilityDamageEntityEvent evenz1 = new AbilityDamageEntityEvent(ability, event.getEntity(), ((FireBall) ability).getDamage());
-                            getServer().getPluginManager().callEvent(evenz1);
-
-                            if (evenz1.isCancelled())
-                            {
-                                event.setCancelled(true);
-                                return;
-                            }
-
-                            event.setDamage(((FireBall) ability).getDamage());
-                            ability.onEnded();
-                            return;
-                        }
-                        else if (event.getCause().equals(DamageCause.ENTITY_EXPLOSION))
-                        {
-                            AbilityDamageEntityEvent evenz1 = new AbilityDamageEntityEvent(ability, event.getEntity(), ((FireBall) ability).getExplodeDamage());
-                            getServer().getPluginManager().callEvent(evenz1);
-
-                            if (evenz1.isCancelled())
-                            {
-                                event.setCancelled(true);
-                                return;
-                            }
-
-                            event.setDamage(((FireBall) ability).getExplodeDamage());
-                            return;
-                        }
-
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onEntityExplode(EntityExplodeEvent event)
-    {
-        for (Ability ability : ItemPlus.getAbilityManager().getAbilityMap().values())
-        {
-            if (ability instanceof FireBall)
-            {
-                if (event.getEntity() instanceof Fireball)
-                {
-                    if (event.getEntity().getUniqueId().equals(((FireBall) ability).getFireball().getUniqueId()))
-                    {
-                        ability.onEnded();
-                        return;
-                    }
-                }
-            }
-        }
-    }
 }

@@ -17,7 +17,6 @@
 
 package com.ItemPlus;
 
-import com.ItemPlus.Core.v1_0_0.Ability.FireBall;
 import com.ItemPlus.Core.v1_0_0.Attribute.AttackDamage;
 import com.ItemPlus.Core.v1_0_0.Attribute.KnockbackResistance;
 import com.ItemPlus.Core.v1_0_0.Attribute.MaxHealth;
@@ -25,6 +24,7 @@ import com.ItemPlus.Core.v1_0_0.Attribute.MovementSpeed;
 import com.ItemPlus.Core.v1_0_0.LoggerHandler;
 import com.ItemPlus.Core.v1_0_0.Manager.AbilityManager;
 import com.ItemPlus.Core.v1_0_0.Manager.AttributeManager;
+import com.ItemPlus.Core.v1_0_0.Manager.BuffManager;
 import com.ItemPlus.Core.v1_0_0.Manager.CommandManager;
 import com.ItemPlus.Core.v1_0_0.Manager.LoggerManager;
 import com.ItemPlus.Core.v1_0_0.Manager.PlayerManager;
@@ -32,6 +32,7 @@ import com.ItemPlus.Core.v1_0_0.Manager.TaskManager;
 import com.ItemPlus.Core.v1_0_0.Script.ScriptHandler;
 import com.ItemPlus.Event.Plugin.PluginDisableEvent;
 import com.ItemPlus.Event.Plugin.PluginEnableEvent;
+import com.ItemPlus.Timer.ServerTimer;
 import java.io.IOException;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -52,11 +53,13 @@ public class ItemPlus extends JavaPlugin
 {
     private static ItemPlus plugin;
     private final static String prefix = "[ItemPlus] ";
+    private static final ServerTimer timer = new ServerTimer();
     public static final LoggerManager logger = new LoggerManager();
     private static final CommandManager commandManager = new CommandManager();
     private static final PlayerManager playerManager = new PlayerManager();
     private static final TaskManager taskManager = new TaskManager();
     private static final AbilityManager abilityManager = new AbilityManager();
+    private static final BuffManager buffManager = new BuffManager();
     private static final AttributeManager attributeManager = new AttributeManager();
     private static Economy economyManager;
     private static Permission permissionManager;
@@ -104,18 +107,21 @@ public class ItemPlus extends JavaPlugin
 
         });
 
+        ItemPlus.getServerTimer().getTimerRunnable().start();
+
         ItemPlus.getAttributeManager().getAttributes().put("AttackDamage", AttackDamage.class);
         ItemPlus.getAttributeManager().getAttributes().put("KnockbackResistance", KnockbackResistance.class);
         ItemPlus.getAttributeManager().getAttributes().put("MaxHealth", MaxHealth.class);
         ItemPlus.getAttributeManager().getAttributes().put("MovementSpeed", MovementSpeed.class);
-        ItemPlus.getAbilityManager().getAbilities().put("FireBall", FireBall.class);
-        
+
         getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Listener.Listeners(), this);
-        
+        getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Ability.AbilityHandler(), this);
+        getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Ability.Buff.BuffHandler(), this);
+
         getCommand("ItemPlus").setExecutor(new com.ItemPlus.CommandExecutor.ItemExecutorHandler());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.PluginCommands());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.TestCommands());
-        
+
         try
         {
             Metrics metrics = new Metrics(this);
@@ -169,6 +175,16 @@ public class ItemPlus extends JavaPlugin
     }
 
     /**
+     * 获取插件时间
+     * <p>
+     * @return ServerTimer
+     */
+    public static ServerTimer getServerTimer()
+    {
+        return ItemPlus.timer;
+    }
+
+    /**
      * 获取玩家管理器
      * <p>
      * @return PlayerManager
@@ -206,6 +222,16 @@ public class ItemPlus extends JavaPlugin
     public static AbilityManager getAbilityManager()
     {
         return ItemPlus.abilityManager;
+    }
+
+    /**
+     * 获取状态管理器
+     * <p>
+     * @return BuffManager
+     */
+    public static BuffManager getBuffManager()
+    {
+        return ItemPlus.buffManager;
     }
 
     /**

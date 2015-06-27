@@ -17,44 +17,52 @@
 
 package com.ItemPlus.Item.Ability.Buff;
 
-import java.util.UUID;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 /**
- * 状态
+ * 状态信息
  * <p>
  * @author HotFlow
  */
-public class Buff
+public class BuffInfo
 {
-    private final BuffInfo info;
-    private final UUID uuid;
-    private long time;
+    private final Player player;
+    private final Entity entity;
+    private final long time;
 
-    public Buff(BuffInfo info)
+    /**
+     * 构造状态信息
+     * <p>
+     * @param player 玩家
+     * @param entity 生物
+     * @param time 时间
+     */
+    public BuffInfo(Player player, Entity entity, long time)
     {
-        this.info = info;
-        this.uuid = UUID.randomUUID();
-        this.time = info.getTime();
+        this.player = player;
+        this.entity = entity;
+        this.time = time;
     }
 
     /**
-     * 获取状态信息
+     * 获取玩家
      * <p>
-     * @return BuffInfo
+     * @return Player
      */
-    public BuffInfo getBuffInfo()
+    public Player getPlayer()
     {
-        return this.info;
+        return this.player;
     }
 
     /**
-     * 获取UUID
+     * 获取生物
      * <p>
-     * @return UUID
+     * @return Entity
      */
-    public UUID getUniqueId()
+    public Entity getEntity()
     {
-        return this.uuid;
+        return this.entity;
     }
 
     /**
@@ -65,15 +73,5 @@ public class Buff
     public long getTime()
     {
         return this.time;
-    }
-
-    /**
-     * 设置时间
-     * <p>
-     * @param time 时间
-     */
-    public void setTime(long time)
-    {
-        this.time = time;
     }
 }

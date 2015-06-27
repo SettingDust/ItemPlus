@@ -32,13 +32,27 @@ public final class AbilityInfo
     private final Player player;
     private final Location loc;
     private final Entity entity;
+    private final long cooldown;
+    private final int durabilityCast;
 
-    protected AbilityInfo(AbilityType type, Player player, Location loc, Entity entity)
+    /**
+     * 构造技能信息
+     * <p>
+     * @param type 技能类型
+     * @param player 玩家
+     * @param loc 坐标
+     * @param entity 生物
+     * @param cooldown 冷却
+     * @param durabilityCast 耐久消耗
+     */
+    protected AbilityInfo(AbilityType type, Player player, Location loc, Entity entity, long cooldown, int durabilityCast)
     {
         this.type = type;
         this.player = player;
         this.loc = loc;
         this.entity = entity;
+        this.cooldown = cooldown;
+        this.durabilityCast = durabilityCast;
     }
 
     /**
@@ -46,11 +60,13 @@ public final class AbilityInfo
      * <p>
      * @param type 技能类型
      * @param player 玩家
+     * @param cooldown 冷却
+     * @param durabilityCast 耐久消耗
      * @throws java.lang.Exception
      */
-    public AbilityInfo(AbilityType type, Player player) throws Exception
+    public AbilityInfo(AbilityType type, Player player, long cooldown, int durabilityCast) throws Exception
     {
-        this(type, player, null, null);
+        this(type, player, null, null, cooldown, durabilityCast);
 
         if (!type.equals(AbilityType.Self))
         {
@@ -64,11 +80,13 @@ public final class AbilityInfo
      * @param type 技能类型
      * @param player 玩家
      * @param loc 坐标
+     * @param cooldown 冷却
+     * @param durabilityCast 耐久消耗
      * @throws java.lang.Exception
      */
-    public AbilityInfo(AbilityType type, Player player, Location loc) throws Exception
+    public AbilityInfo(AbilityType type, Player player, Location loc, long cooldown, int durabilityCast) throws Exception
     {
-        this(type, player, loc, null);
+        this(type, player, loc, null, cooldown, durabilityCast);
 
         if (!type.equals(AbilityType.Point))
         {
@@ -82,11 +100,13 @@ public final class AbilityInfo
      * @param type 技能类型
      * @param player 玩家
      * @param entity 目标
+     * @param cooldown 冷却
+     * @param durabilityCast 耐久消耗
      * @throws java.lang.Exception
      */
-    public AbilityInfo(AbilityType type, Player player, Entity entity) throws Exception
+    public AbilityInfo(AbilityType type, Player player, Entity entity, long cooldown, int durabilityCast) throws Exception
     {
-        this(type, player, null, entity);
+        this(type, player, null, entity, cooldown, durabilityCast);
 
         if (!type.equals(AbilityType.Entity))
         {
@@ -134,5 +154,25 @@ public final class AbilityInfo
     public Entity getEntity() throws NullPointerException
     {
         return this.entity;
+    }
+
+    /**
+     * 获取技能冷却时间
+     * <p>
+     * @return
+     */
+    public long getCooldown()
+    {
+        return this.cooldown;
+    }
+
+    /**
+     * 获取耐久消耗
+     * <p>
+     * @return int
+     */
+    public int getDurabilityCast()
+    {
+        return this.durabilityCast;
     }
 }

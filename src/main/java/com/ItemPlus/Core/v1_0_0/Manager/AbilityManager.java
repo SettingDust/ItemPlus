@@ -28,21 +28,10 @@ import java.util.UUID;
  */
 public final class AbilityManager
 {
-    private final HashMap<String, Class<? extends Ability>> abilities = new HashMap<String, Class<? extends Ability>>();
     private final HashMap<UUID, Ability> abilityMap = new HashMap<UUID, Ability>();
 
     /**
      * 获取所有技能
-     * <p>
-     * @return HashMap<String, Class<? extends Ability>>
-     */
-    public HashMap<String, Class<? extends Ability>> getAbilities()
-    {
-        return this.abilities;
-    }
-
-    /**
-     * 获取存在的技能列表
      * <p>
      * @return HashMap<UUID, Ability>
      */

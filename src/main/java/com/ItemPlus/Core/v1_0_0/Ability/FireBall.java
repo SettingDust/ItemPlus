@@ -21,7 +21,9 @@ import com.ItemPlus.Event.Item.Ability.AbilityEndedEvent;
 import com.ItemPlus.Event.Item.Ability.AbilitySpellEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
+import com.ItemPlus.Item.Ability.Buff.Buff;
 import com.ItemPlus.ItemPlus;
+import java.util.List;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Location;
 import org.bukkit.entity.Fireball;
@@ -45,12 +47,10 @@ public final class FireBall extends Ability
      * @param damage 伤害
      * @param explodeDamage 爆炸伤害
      * @param info 技能信息
-     * @param cooldown 冷却
-     * @param durabilityCast 耐久消耗
      */
-    public FireBall(double damage, double explodeDamage, AbilityInfo info, long cooldown, int durabilityCast)
+    public FireBall(double damage, double explodeDamage, AbilityInfo info)
     {
-        super(info, cooldown, durabilityCast);
+        super(info);
         this.ball = null;
         this.damage = damage;
         this.explodeDamage = explodeDamage;

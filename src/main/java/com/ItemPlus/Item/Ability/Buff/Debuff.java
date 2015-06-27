@@ -22,19 +22,10 @@ package com.ItemPlus.Item.Ability.Buff;
  * <p>
  * @author HotFlow
  */
-public interface Debuff extends Buff
+public class Debuff extends Buff
 {
-    /**
-     * 是否可移除
-     * <p>
-     * @return Boolean
-     */
-    public Boolean canBeRemove();
-
-    /**
-     * 设置是否可以移除
-     * <p>
-     * @param bln 是否可被移除
-     */
-    public void setCanRemove(Boolean bln);
+    public Debuff(BuffInfo info)
+    {
+        super(info);
+    }
 }

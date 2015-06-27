@@ -17,11 +17,31 @@
 
 package com.ItemPlus.Core.v1_0_0.Ability;
 
+import com.ItemPlus.Item.Ability.Ability;
+import com.ItemPlus.Item.Ability.AbilityInfo;
+
 /**
  * 
  * @author HotFlow
  */
-public class Shock
+public class Shock extends Ability
 {
+
+    public Shock(AbilityInfo info)
+    {
+        super(info);
+    }
+
+    @Override
+    public void onSpell()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void onEnded()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

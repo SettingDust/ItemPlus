@@ -17,27 +17,20 @@
 
 package com.ItemPlus.Core.v1_0_0.Ability.Buff;
 
-import com.ItemPlus.Item.Ability.Buff.BuffInfo;
-import com.ItemPlus.Item.Ability.Buff.Debuff;
+import com.ItemPlus.Event.Plugin.PluginTimeChangeEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 /**
- * 被慢速
- * <p>
- * 目标移动速度被降低了。
+ * 状态处理
  * <p>
  * @author HotFlow
  */
-public class Slowed extends Debuff
+public class BuffHandler implements Listener
 {
-
-    /**
-     * 构造被慢速
-     * <p>
-     * @param info 信息
-     */
-    public Slowed(BuffInfo info)
+    @EventHandler
+    public void onSlowed_Effect(PluginTimeChangeEvent event)
     {
-        super(info);
+        
     }
-
 }

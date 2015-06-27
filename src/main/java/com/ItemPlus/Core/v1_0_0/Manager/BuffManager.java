@@ -15,29 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ItemPlus.Core.v1_0_0.Ability.Buff;
+package com.ItemPlus.Core.v1_0_0.Manager;
 
-import com.ItemPlus.Item.Ability.Buff.BuffInfo;
-import com.ItemPlus.Item.Ability.Buff.Debuff;
+import com.ItemPlus.Item.Ability.Buff.Buff;
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
- * 被慢速
- * <p>
- * 目标移动速度被降低了。
+ * 状态管理器
  * <p>
  * @author HotFlow
  */
-public class Slowed extends Debuff
+public final class BuffManager
 {
+    private final HashMap<UUID, Buff> buffMap = new HashMap<UUID, Buff>();
 
     /**
-     * 构造被慢速
+     * 获取所有状态
      * <p>
-     * @param info 信息
+     * @return HashMap<UUID, Buff>
      */
-    public Slowed(BuffInfo info)
+    public HashMap<UUID, Buff> getBuffMap()
     {
-        super(info);
+        return this.buffMap;
     }
-
 }

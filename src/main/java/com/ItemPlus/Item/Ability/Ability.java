@@ -17,6 +17,8 @@
 
 package com.ItemPlus.Item.Ability;
 
+import com.ItemPlus.Item.Ability.Buff.Buff;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -27,22 +29,18 @@ import java.util.UUID;
 public abstract class Ability
 {
     private final AbilityInfo info;
-    private final long cooldown;
-    private final int durabilityCast;
+    private long time;
     private final UUID uuid;
 
     /**
      * 构造技能
      * <p>
      * @param info 技能信息
-     * @param cooldown 冷却
-     * @param durabilityCast 耐久消耗
      */
-    public Ability(AbilityInfo info, long cooldown, int durabilityCast)
+    public Ability(AbilityInfo info)
     {
         this.info = info;
-        this.cooldown = cooldown;
-        this.durabilityCast = durabilityCast;
+        this.time = info.getCooldown();
         this.uuid = UUID.randomUUID();
     }
 
@@ -57,23 +55,23 @@ public abstract class Ability
     }
 
     /**
-     * 获取冷却时间
+     * 获取剩余冷却时间
      * <p>
      * @return long
      */
-    public long getCooldown()
+    public long getTime()
     {
-        return this.cooldown;
+        return this.time;
     }
 
     /**
-     * 获取耐久消耗
+     * 设置剩余冷却时间
      * <p>
-     * @return int
+     * @param time 时间
      */
-    public int getDurabilityCast()
+    public void setTime(long time)
     {
-        return this.durabilityCast;
+        this.time = time;
     }
 
     /**
