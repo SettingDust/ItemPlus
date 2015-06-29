@@ -21,9 +21,7 @@ import com.ItemPlus.Event.Item.Ability.AbilityEndedEvent;
 import com.ItemPlus.Event.Item.Ability.AbilitySpellEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
-import com.ItemPlus.Item.Ability.Buff.Buff;
 import com.ItemPlus.ItemPlus;
-import java.util.List;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Location;
 import org.bukkit.entity.Fireball;
@@ -60,21 +58,24 @@ public final class FireBall extends Ability
     @SuppressWarnings("deprecation")
     public void onSpell()
     {
-        AbilitySpellEvent event = new AbilitySpellEvent(this);
-        getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled())
+        if (this.getAbilityInfo().getLocation() != null)
         {
-            return;
+            AbilitySpellEvent event = new AbilitySpellEvent(this);
+            getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled())
+            {
+                return;
+            }
+
+            ItemPlus.getAbilityManager().getAbilityMap().put(this.getUniqueId(), this);
+
+            final Location from = this.getAbilityInfo().getPlayer().getLocation();
+            from.setY(from.getY() + 1);
+            this.ball = this.getAbilityInfo().getPlayer().getWorld().spawn(from, Fireball.class);
+            this.ball.setShooter(this.getAbilityInfo().getPlayer());
+            this.ball.setDirection(from.subtract(this.getAbilityInfo().getLocation()).getDirection());
         }
-
-        ItemPlus.getAbilityManager().getAbilityMap().put(this.getUniqueId(), this);
-
-        Location from = this.getAbilityInfo().getPlayer().getLocation();
-        from.setY(from.getY() + 1);
-        this.ball = this.getAbilityInfo().getPlayer().getWorld().spawn(from, Fireball.class);
-        this.ball.setShooter(this.getAbilityInfo().getPlayer());
-        this.ball.setDirection(from.subtract(this.getAbilityInfo().getLocation()).getDirection());
     }
 
     @Override

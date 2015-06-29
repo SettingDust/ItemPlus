@@ -44,9 +44,9 @@ public final class AbilityHandler implements Listener
     @EventHandler
     public void onAbilityEffect(AbilityEffectEvent event)
     {
-        if(event.getAbility() instanceof Shock)
+        if (event.getAbility() instanceof Shock)
         {
-            
+
         }
     }
 
@@ -132,6 +132,58 @@ public final class AbilityHandler implements Listener
                 {
                     if (event.getEntity().getUniqueId().equals(((FireBall) ability).getFireball().getUniqueId()))
                     {
+                        ability.onEnded();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    @SuppressWarnings("unchecked")
+    public void onShock_Spell(PlayerInteractEvent event)
+    {
+        try
+        {
+            Shock shock = new Shock(10, new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation(), 10L, 10));
+            shock.onSpell();
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(AbilityHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @EventHandler
+    public void onShock_Effect(EntityDamageByEntityEvent event)
+    {
+        for (Ability ability : ItemPlus.getAbilityManager().getAbilityMap().values())
+        {
+            if (ability instanceof Shock)
+            {
+                if (event.getDamager().getUniqueId().equals(((Shock) ability).getLightningStrike().getUniqueId()))
+                {
+                    AbilityEffectEvent evenz = new AbilityEffectEvent(ability);
+
+                    if (evenz.isCancelled())
+                    {
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    if (event.getCause().equals(EntityDamageEvent.DamageCause.LIGHTNING))
+                    {
+                        AbilityDamageEntityEvent evenz1 = new AbilityDamageEntityEvent(ability, event.getEntity(), ((Shock) ability).getDamage());
+                        getServer().getPluginManager().callEvent(evenz1);
+
+                        if (evenz1.isCancelled())
+                        {
+                            event.setCancelled(true);
+                            return;
+                        }
+
+                        event.setDamage(((Shock) ability).getDamage());
                         ability.onEnded();
                         return;
                     }

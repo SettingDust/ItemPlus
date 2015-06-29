@@ -117,7 +117,7 @@ public class ItemPlus extends JavaPlugin
 
         getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Listener.Listeners(), this);
         getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Ability.AbilityHandler(), this);
-        getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Ability.Buff.BuffHandler(), this);
+        getServer().getPluginManager().registerEvents(new com.ItemPlus.Core.v1_0_0.Ability.Buffs.BuffHandler(), this);
 
         getCommand("ItemPlus").setExecutor(new com.ItemPlus.CommandExecutor.ItemExecutorHandler());
         ItemPlus.getCommandManager().getCommandExecutors().add(new com.ItemPlus.Core.v1_0_0.Command.PluginCommands());

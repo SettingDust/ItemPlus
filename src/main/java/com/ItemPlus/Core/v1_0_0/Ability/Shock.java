@@ -17,31 +17,85 @@
 
 package com.ItemPlus.Core.v1_0_0.Ability;
 
+import com.ItemPlus.Event.Item.Ability.AbilityEndedEvent;
+import com.ItemPlus.Event.Item.Ability.AbilitySpellEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
+import com.ItemPlus.ItemPlus;
+import static org.bukkit.Bukkit.getServer;
+import org.bukkit.entity.LightningStrike;
 
 /**
- * 
+ * 雷击术
+ * <p>
+ * 对目标点造成一道雷击伤害。
+ * <p>
  * @author HotFlow
  */
 public class Shock extends Ability
 {
+    private final double damage;
+    private LightningStrike lightning;
 
-    public Shock(AbilityInfo info)
+    /**
+     * 构造雷击术
+     * <p>
+     * @param info 信息
+     * @param damage 伤害
+     */
+    public Shock(double damage, AbilityInfo info)
     {
         super(info);
+        this.damage = damage;
     }
 
     @Override
     public void onSpell()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.getAbilityInfo().getLocation() != null)
+        {
+            AbilitySpellEvent event = new AbilitySpellEvent(this);
+            getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled())
+            {
+                return;
+            }
+
+            ItemPlus.getAbilityManager().getAbilityMap().put(this.getUniqueId(), this);
+
+            this.lightning = this.getAbilityInfo().getEntity().getWorld().strikeLightning(this.getAbilityInfo().getLocation());
+        }
+
     }
 
     @Override
     public void onEnded()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ItemPlus.getAbilityManager().getAbilityMap().remove(this.getUniqueId());
+
+        AbilityEndedEvent event = new AbilityEndedEvent(this);
+        getServer().getPluginManager().callEvent(event);
     }
-    
+
+    /**
+     * 获取伤害
+     * <p>
+     * @return double
+     */
+    public double getDamage()
+    {
+        return this.damage;
+    }
+
+    /**
+     * 获取雷电
+     * <p>
+     * @return LightningStrike
+     */
+    public LightningStrike getLightningStrike()
+    {
+        return this.lightning;
+    }
+
 }

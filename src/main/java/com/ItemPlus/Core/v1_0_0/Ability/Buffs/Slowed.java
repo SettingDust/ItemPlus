@@ -15,22 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ItemPlus.Core.v1_0_0.Ability.Buff;
+package com.ItemPlus.Core.v1_0_0.Ability.Buffs;
 
-import com.ItemPlus.Event.Plugin.PluginTimeChangeEvent;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import com.ItemPlus.Item.Ability.Buff.BuffInfo;
+import com.ItemPlus.Item.Ability.Buff.Debuff;
 
 /**
- * 状态处理
+ * 被慢速
+ * <p>
+ * 目标移动速度被降低了。
  * <p>
  * @author HotFlow
  */
-public class BuffHandler implements Listener
+public class Slowed extends Debuff
 {
-    @EventHandler
-    public void onSlowed_Effect(PluginTimeChangeEvent event)
+
+    /**
+     * 构造被慢速
+     * <p>
+     * @param info 信息
+     */
+    public Slowed(BuffInfo info)
     {
-        
+        super(info);
     }
+
 }
