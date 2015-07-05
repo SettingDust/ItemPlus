@@ -15,28 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.ItemPlus.Core.v1_0_0.Ability.Buffs;
+package com.ItemPlus.Event.Entity;
 
-import com.ItemPlus.Event.Plugin.PluginTimeChangeEvent;
-import static org.bukkit.Bukkit.getServer;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.entity.Entity;
+import org.bukkit.event.HandlerList;
 
 /**
- * 状态处理
+ * 生物事件
  * <p>
  * @author HotFlow
  */
-public class BuffHandler implements Listener
+public class EntityEvent extends org.bukkit.event.entity.EntityEvent
 {
-    @EventHandler
-    @SuppressWarnings("deprecation")
-    public void onBuff_Effect(PluginTimeChangeEvent event)
+    private static final HandlerList handlers = new HandlerList();
+
+    public EntityEvent(Entity entity)
     {
-        for(Player player : getServer().getOnlinePlayers())
-        {
-            
-        }
+        super(entity);
     }
+
+    @Override
+    public HandlerList getHandlers()
+    {
+        return handlers;
+    }
+
 }

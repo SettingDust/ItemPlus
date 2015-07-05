@@ -44,7 +44,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public final class AbilityHandler implements Listener
 {
     @EventHandler
-    @SuppressWarnings("deprecation")
     public void onAbility_Spell(PlayerInteractEvent event)
     {
         List<Ability> abilities = new ItemStack(event.getItem()).getAbilityList();
