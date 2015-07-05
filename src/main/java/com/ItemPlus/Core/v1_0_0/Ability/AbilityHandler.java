@@ -22,7 +22,9 @@ import com.ItemPlus.Event.Item.Ability.AbilityEffectEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
 import com.ItemPlus.Item.Ability.AbilityType;
+import com.ItemPlus.Item.ItemStack;
 import com.ItemPlus.ItemPlus;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.bukkit.Bukkit.getServer;
@@ -42,26 +44,24 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public final class AbilityHandler implements Listener
 {
     @EventHandler
-    public void onAbilityEffect(AbilityEffectEvent event)
+    @SuppressWarnings("deprecation")
+    public void onAbility_Spell(PlayerInteractEvent event)
     {
-        if (event.getAbility() instanceof Shock)
-        {
+        List<Ability> abilities = new ItemStack(event.getItem()).getAbilityList();
 
-        }
-    }
-
-    @EventHandler
-    @SuppressWarnings("unchecked")
-    public void onFireBall_Spell(PlayerInteractEvent event)
-    {
         try
         {
-            FireBall ball = new FireBall(20, 5, new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation(), 10L, 10));
-            ball.onSpell();
+            //abilities.add(new FireBall(20, 5, new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation(), 10L, 10)));
+            abilities.add(new Shock(10, new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getTargetBlock(null, 256).getLocation(), 10L, 10)));
         }
         catch (Exception ex)
         {
             Logger.getLogger(AbilityHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (Ability ability : abilities)
+        {
+            ability.onSpell();
         }
     }
 
@@ -137,21 +137,6 @@ public final class AbilityHandler implements Listener
                     }
                 }
             }
-        }
-    }
-
-    @EventHandler
-    @SuppressWarnings("unchecked")
-    public void onShock_Spell(PlayerInteractEvent event)
-    {
-        try
-        {
-            Shock shock = new Shock(10, new AbilityInfo(AbilityType.Point, event.getPlayer(), event.getPlayer().getEyeLocation(), 10L, 10));
-            shock.onSpell();
-        }
-        catch (Exception ex)
-        {
-            Logger.getLogger(AbilityHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

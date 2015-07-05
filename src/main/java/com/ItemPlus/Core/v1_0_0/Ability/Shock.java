@@ -64,7 +64,7 @@ public class Shock extends Ability
 
             ItemPlus.getAbilityManager().getAbilityMap().put(this.getUniqueId(), this);
 
-            this.lightning = this.getAbilityInfo().getEntity().getWorld().strikeLightning(this.getAbilityInfo().getLocation());
+            this.lightning = this.getAbilityInfo().getPlayer().getWorld().strikeLightning(this.getAbilityInfo().getLocation());
         }
 
     }

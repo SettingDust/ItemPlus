@@ -27,7 +27,6 @@ import com.ItemPlus.Core.v1_0_0.Manager.AttributeManager;
 import com.ItemPlus.Core.v1_0_0.Manager.BuffManager;
 import com.ItemPlus.Core.v1_0_0.Manager.CommandManager;
 import com.ItemPlus.Core.v1_0_0.Manager.LoggerManager;
-import com.ItemPlus.Core.v1_0_0.Manager.PlayerManager;
 import com.ItemPlus.Core.v1_0_0.Manager.TaskManager;
 import com.ItemPlus.Core.v1_0_0.Script.ScriptHandler;
 import com.ItemPlus.Event.Plugin.PluginDisableEvent;
@@ -56,7 +55,6 @@ public class ItemPlus extends JavaPlugin
     private static ServerTimer timer;
     public static final LoggerManager logger = new LoggerManager();
     private static final CommandManager commandManager = new CommandManager();
-    private static final PlayerManager playerManager = new PlayerManager();
     private static final TaskManager taskManager = new TaskManager();
     private static final AbilityManager abilityManager = new AbilityManager();
     private static final BuffManager buffManager = new BuffManager();
@@ -183,16 +181,6 @@ public class ItemPlus extends JavaPlugin
     public static ServerTimer getServerTimer()
     {
         return ItemPlus.timer;
-    }
-
-    /**
-     * 获取玩家管理器
-     * <p>
-     * @return PlayerManager
-     */
-    public static PlayerManager getPlayerManager()
-    {
-        return ItemPlus.playerManager;
     }
 
     /**
