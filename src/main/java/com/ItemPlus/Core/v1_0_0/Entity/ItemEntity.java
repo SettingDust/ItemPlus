@@ -37,4 +37,14 @@ public class ItemEntity
     {
         this.entity = entity;
     }
+
+    /**
+     * 获取BukkitEntity
+     * <p>
+     * @return Entity
+     */
+    public Entity getEntity()
+    {
+        return this.entity;
+    }
 }

@@ -17,7 +17,8 @@
 
 package com.ItemPlus.Event.Entity;
 
-import org.bukkit.entity.Entity;
+import com.ItemPlus.Core.v1_0_0.Entity.ItemEntity;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -25,13 +26,24 @@ import org.bukkit.event.HandlerList;
  * <p>
  * @author HotFlow
  */
-public class EntityEvent extends org.bukkit.event.entity.EntityEvent
+public class EntityEvent extends Event
 {
     private static final HandlerList handlers = new HandlerList();
+    private final ItemEntity entity;
 
-    public EntityEvent(Entity entity)
+    public EntityEvent(ItemEntity entity)
     {
-        super(entity);
+        this.entity = entity;
+    }
+
+    /**
+     * 获取生物
+     * <p>
+     * @return ItemEntity
+     */
+    public ItemEntity getEntity()
+    {
+        return this.entity;
     }
 
     @Override
@@ -40,4 +52,13 @@ public class EntityEvent extends org.bukkit.event.entity.EntityEvent
         return handlers;
     }
 
+    /**
+     * 获取处理者列表
+     * <p>
+     * @return HandlerList
+     */
+    public static HandlerList getHandlerList()
+    {
+        return handlers;
+    }
 }
