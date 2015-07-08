@@ -19,6 +19,8 @@ package com.ItemPlus.Core.v1_0_0.Ability;
 
 import com.ItemPlus.Event.Item.Ability.AbilityDamageEntityEvent;
 import com.ItemPlus.Event.Item.Ability.AbilityEffectEvent;
+import com.ItemPlus.Event.Item.Ability.AbilitySpellEvent;
+import com.ItemPlus.Event.Plugin.PluginTimeChangeEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
 import com.ItemPlus.Item.Ability.AbilityType;
@@ -44,7 +46,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public final class AbilityHandler implements Listener
 {
     @EventHandler
-    public void onAbility_Spell(PlayerInteractEvent event)
+    public void onPlayerInteract(PlayerInteractEvent event)
     {
         List<Ability> abilities = new ItemStack(event.getItem()).getAbilityList();
 
@@ -61,6 +63,22 @@ public final class AbilityHandler implements Listener
         for (Ability ability : abilities)
         {
             ability.onSpell();
+        }
+    }
+
+    @EventHandler
+    public void onAbilitySpell(PluginTimeChangeEvent event)
+    {
+        for (Ability ability : ItemPlus.getAbilityManager().getAbilityMap().values())
+        {
+            if (ability.getTime() > 0)
+            {
+                ability.setTime(ability.getTime() - 1);
+            }
+            else
+            {
+                ItemPlus.getAbilityManager().getAbilityMap().remove(ability.getUniqueId());
+            }
         }
     }
 

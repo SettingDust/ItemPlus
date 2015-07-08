@@ -45,7 +45,7 @@ public final class FileWritter
         this.file = file;
     }
 
-    private void write(int index, String s)
+    public void write(int index, String s)
     {
         if (!this.file.exists())
         {
@@ -91,7 +91,7 @@ public final class FileWritter
         }
     }
 
-    private void write(String s)
+    public void write(String s)
     {
         if (!this.file.exists())
         {

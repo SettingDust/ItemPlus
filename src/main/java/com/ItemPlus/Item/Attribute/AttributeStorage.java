@@ -36,9 +36,9 @@ import java.util.UUID;
  * <p>
  * @author HotFlow
  */
-public final class AttributeStorage
+public class AttributeStorage
 {
-    
+
     private final ItemStack item;
     private final List<Attribute> attributeList = new ArrayList<Attribute>();
 
@@ -50,7 +50,6 @@ public final class AttributeStorage
     public AttributeStorage(ItemStack item)
     {
         this.item = item;
-        this.load();
     }
 
     /**
@@ -63,15 +62,15 @@ public final class AttributeStorage
         {
             item.setTag(new TAG_Compound("tag", new HashMap<String, TAG>()));
         }
-        
+
         if (item.getTag() instanceof TAG_Compound)
         {
             TAG_Compound tag = (TAG_Compound) item.getTag();
-            
+
             tag.getValue().put("AttributeModifiers", new TAG_List("AttributeModifiers", TAG_Compound.class, new ArrayList<TAG>()));
-            
+
             List<TAG> attributes = ((TAG_List) tag.getValue().get("AttributeModifiers")).getValue();
-            
+
             Attributes:
             for (Attribute attribute : this.getAttributes())
             {
@@ -83,9 +82,9 @@ public final class AttributeStorage
                         {
                             continue Attributes;
                         }
-                        
+
                         String name = ((TAG_String) ((TAG_Compound) attributeTag).getValue().get("Name")).getValue();
-                        
+
                         if (name.equalsIgnoreCase(attribute.getName()))
                         {
                             continue Attributes;
@@ -96,7 +95,7 @@ public final class AttributeStorage
                         continue;
                     }
                 }
-                
+
                 Map<String, TAG> map = new HashMap<String, TAG>();
                 map.put("Name", new TAG_String("Name", attribute.getName()));
                 map.put("AttributeName", new TAG_String("AttributeName", attribute.getTypeString()));
@@ -104,10 +103,10 @@ public final class AttributeStorage
                 map.put("Operation", new TAG_Int("Operation", attribute.getOperation()));
                 map.put("UUIDMost", new TAG_Long("UUIDMost", attribute.getUUID().getMostSignificantBits()));
                 map.put("UUIDLeast", new TAG_Long("UUIDLeast", attribute.getUUID().getLeastSignificantBits()));
-                
+
                 attributes.add(new TAG_Compound("", map));
             }
-            
+
             this.item.setTag(tag);
         }
     }
@@ -121,30 +120,30 @@ public final class AttributeStorage
         {
             item.setTag(new TAG_Compound("tag", new HashMap<String, TAG>()));
         }
-        
+
         if (item.getTag() instanceof TAG_Compound)
         {
             TAG_Compound tag = (TAG_Compound) item.getTag();
-            
+
             if (!tag.getValue().containsKey("AttributeModifiers"))
             {
                 tag.getValue().put("AttributeModifiers", new TAG_List("AttributeModifiers", TAG_Compound.class, new ArrayList<TAG>()));
             }
-            
+
             List<TAG> attributes = ((TAG_List) tag.getValue().get("AttributeModifiers")).getValue();
-            
+
             for (int i = 0; i < attributes.size(); i++)
             {
                 if (attributes.get(i) instanceof TAG_Compound)
                 {
                     TAG_Compound attribute = (TAG_Compound) attributes.get(i);
-                    
+
                     final String name = ((TAG_String) attribute.getValue().get("Name")).getValue();
                     final String attributeName = ((TAG_String) attribute.getValue().get("AttributeName")).getValue();
                     int operation = ((TAG_Int) attribute.getValue().get("Operation")).getValue();
                     Double amount = ((TAG_Double) attribute.getValue().get("Amount")).getValue();
                     UUID uuid = new UUID(((TAG_Long) attribute.getValue().get("UUIDMost")).getValue(), ((TAG_Long) attribute.getValue().get("UUIDLeast")).getValue());
-                    
+
                     Attribute abstractAttribute = new Attribute(name, operation, amount, uuid)
                     {
                         @Override
@@ -152,9 +151,9 @@ public final class AttributeStorage
                         {
                             return attributeName;
                         }
-                        
+
                     };
-                    
+
                     this.attributeList.add(abstractAttribute);
                 }
             }
@@ -176,7 +175,7 @@ public final class AttributeStorage
                 return attribute;
             }
         }
-        
+
         return null;
     }
 
@@ -189,5 +188,5 @@ public final class AttributeStorage
     {
         return this.attributeList;
     }
-    
+
 }

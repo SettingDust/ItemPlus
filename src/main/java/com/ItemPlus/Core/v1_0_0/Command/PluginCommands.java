@@ -148,7 +148,6 @@ public class PluginCommands implements ItemExecutor
             {
                 if (args.length > 0)
                 {
-                    new com.ItemPlus.Item.ItemStack(player.getItemInHand()).setName(args[0]);
                     player.sendMessage("修改成功!");
                     return true;
                 }

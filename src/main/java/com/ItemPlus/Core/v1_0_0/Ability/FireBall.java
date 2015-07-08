@@ -17,7 +17,6 @@
 
 package com.ItemPlus.Core.v1_0_0.Ability;
 
-import com.ItemPlus.Event.Item.Ability.AbilityEndedEvent;
 import com.ItemPlus.Event.Item.Ability.AbilitySpellEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
@@ -76,15 +75,6 @@ public final class FireBall extends Ability
             this.ball.setShooter(this.getAbilityInfo().getPlayer());
             this.ball.setDirection(from.subtract(this.getAbilityInfo().getLocation()).getDirection());
         }
-    }
-
-    @Override
-    public void onEnded()
-    {
-        ItemPlus.getAbilityManager().getAbilityMap().remove(this.getUniqueId());
-
-        AbilityEndedEvent event = new AbilityEndedEvent(this);
-        getServer().getPluginManager().callEvent(event);
     }
 
     /**

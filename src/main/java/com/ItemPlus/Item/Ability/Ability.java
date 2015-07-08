@@ -17,9 +17,9 @@
 
 package com.ItemPlus.Item.Ability;
 
-import com.ItemPlus.Item.Ability.Buff.Buff;
-import java.util.List;
+import com.ItemPlus.Event.Item.Ability.AbilityEndedEvent;
 import java.util.UUID;
+import static org.bukkit.Bukkit.getServer;
 
 /**
  * 抽象技能
@@ -28,7 +28,7 @@ import java.util.UUID;
  */
 public abstract class Ability
 {
-    private final AbilityInfo info;
+    private AbilityInfo info;
     private long time;
     private final UUID uuid;
 
@@ -52,6 +52,16 @@ public abstract class Ability
     public AbilityInfo getAbilityInfo()
     {
         return this.info;
+    }
+
+    /**
+     * 设置技能信息
+     * <p>
+     * @param info 技能信息
+     */
+    public void setAbilityInfo(AbilityInfo info)
+    {
+        this.info = info;
     }
 
     /**
@@ -92,5 +102,9 @@ public abstract class Ability
     /**
      * 当技能结束时
      */
-    public abstract void onEnded();
+    public void onEnded()
+    {
+        AbilityEndedEvent event = new AbilityEndedEvent(this);
+        getServer().getPluginManager().callEvent(event);
+    }
 }

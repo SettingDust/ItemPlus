@@ -69,15 +69,6 @@ public class Shock extends Ability
 
     }
 
-    @Override
-    public void onEnded()
-    {
-        ItemPlus.getAbilityManager().getAbilityMap().remove(this.getUniqueId());
-
-        AbilityEndedEvent event = new AbilityEndedEvent(this);
-        getServer().getPluginManager().callEvent(event);
-    }
-
     /**
      * 获取伤害
      * <p>

@@ -34,10 +34,10 @@ public abstract class Attribute
     /**
      * 构造抽象属性
      * <p>
-     * @param name      名字
+     * @param name 名字
      * @param operation 操作方式
-     * @param amount    值
-     * @param uuid      uuid
+     * @param amount 值
+     * @param uuid uuid
      */
     public Attribute(String name, int operation, double amount, UUID uuid)
     {
