@@ -104,7 +104,6 @@ public class ItemPlus extends JavaPlugin
             {
                 record.setMessage(ItemPlus.getPrefix() + record.getMessage());
             }
-
         });
 
         ItemPlus.timer = new ServerTimer();
@@ -139,6 +138,9 @@ public class ItemPlus extends JavaPlugin
     {
         PluginDisableEvent event = new PluginDisableEvent(this);
         getServer().getPluginManager().callEvent(event);
+        
+        ItemPlus.getServerTimer().getTimerRunnable().clear();
+        
         for (Handler handler : ItemPlus.logger.getLogger().getHandlers())
         {
             ItemPlus.logger.getLogger().removeHandler(handler);

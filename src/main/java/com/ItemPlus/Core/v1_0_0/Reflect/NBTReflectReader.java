@@ -18,7 +18,6 @@
 package com.ItemPlus.Core.v1_0_0.Reflect;
 
 import com.ItemPlus.Core.v1_0_0.Utils.ISystem;
-import com.ItemPlus.ItemPlus;
 import com.ItemPlus.NBT.TAG;
 import com.ItemPlus.NBT.TAG_Byte;
 import com.ItemPlus.NBT.TAG_Byte_Array;
@@ -32,13 +31,13 @@ import com.ItemPlus.NBT.TAG_List;
 import com.ItemPlus.NBT.TAG_Long;
 import com.ItemPlus.NBT.TAG_Short;
 import com.ItemPlus.NBT.TAG_String;
+import com.comphenix.protocol.utility.MinecraftReflection;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -64,33 +63,23 @@ public final class NBTReflectReader
      */
     public NBTReflectReader(final ItemStack item)
     {
-        ClassLoader loader = NBTReflectReader.class.getClassLoader();
+        this.item = MinecraftReflection.getBukkitItemStack(item);
+        this.CRAFT_STACK = this.reflect.getCraftItemStackClass();
+        this.CRAFT_HANDLE = this.reflect.getField(null, CRAFT_STACK, "handle");
 
-        try
+        Class<?> clazz = CRAFT_HANDLE.getType();
+
+        String tag = "tag";
+
+        for (Field field : clazz.getDeclaredFields())
         {
-            this.item = item;
-            this.CRAFT_STACK = loader.loadClass(Reflector.getMinecraftPackageName() + ".inventory.CraftItemStack");
-            this.CRAFT_HANDLE = this.reflect.getField(null, CRAFT_STACK, "handle");
-
-            Class<?> clazz = CRAFT_HANDLE.getType();
-
-            String tag = "tag";
-
-            for (Field field : clazz.getDeclaredFields())
+            if (field.getName().equalsIgnoreCase("tag") || field.getName().equalsIgnoreCase("field_77990_d"))
             {
-                if (field.getName().equalsIgnoreCase("tag") || field.getName().equalsIgnoreCase("field_77990_d"))
-                {
-                    tag = field.getName();
-                }
+                tag = field.getName();
             }
-
-            this.STACK_TAG = this.reflect.getField(null, CRAFT_HANDLE.getType(), tag);
-
         }
-        catch (ClassNotFoundException ex)
-        {
-            ItemPlus.logger.getLogger().log(Level.SEVERE, null, ex);
-        }
+
+        this.STACK_TAG = this.reflect.getField(null, CRAFT_HANDLE.getType(), tag);
 
         this.nms = this.reflect.getFieldValue(CRAFT_HANDLE, this.item);
         this.tag = this.reflect.getFieldValue(STACK_TAG, nms);
@@ -109,12 +98,13 @@ public final class NBTReflectReader
     /**
      * 获取标签
      * <p>
+     * @param name 名字
      * @return TAG
      * @throws java.lang.Exception
      */
-    public TAG getTag() throws Exception
+    public TAG getTag(String name) throws Exception
     {
-        return getTag("", tag);
+        return getTag(name, tag);
     }
 
     @SuppressWarnings("unchecked")
@@ -132,7 +122,7 @@ public final class NBTReflectReader
             }
             else if (value.getClass().getName().contains("NBTTagShort"))
             {
-                return new TAG_Short(name, new Short(value.toString().substring(0, value.toString().length() - 1)));
+                return new TAG_Short(name, new Short(value.toString().replaceAll("[^\\d]", "")));
             }
             else if (value.getClass().getName().contains("NBTTagInt"))
             {
@@ -140,7 +130,7 @@ public final class NBTReflectReader
             }
             else if (value.getClass().getName().contains("NBTTagLong"))
             {
-                return new TAG_Long(name, new Long(value.toString().substring(0, value.toString().length() - 1)));
+                return new TAG_Long(name, new Long(value.toString().replaceAll("[^\\d]", "")));
             }
             else if (value.getClass().getName().contains("NBTTagFloat"))
             {
@@ -148,7 +138,7 @@ public final class NBTReflectReader
             }
             else if (value.getClass().getName().contains("NBTTagDouble"))
             {
-                return new TAG_Double(name, new Double(value.toString().substring(0, value.toString().length() - 1)));
+                return new TAG_Double(name, new Double(value.toString().replaceAll("[^\\d]", "")));
             }
             else if (value.getClass().getName().contains("NBTTagByteArray"))
             {
@@ -234,7 +224,7 @@ public final class NBTReflectReader
                 throw new Exception("NBT类型 " + value.getClass().getName() + " 不存在!");
             }
         }
-        
+
         return null;
     }
 

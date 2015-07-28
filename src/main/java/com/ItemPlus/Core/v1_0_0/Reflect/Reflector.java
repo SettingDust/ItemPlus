@@ -21,6 +21,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 
@@ -31,6 +33,36 @@ import org.bukkit.Server;
  */
 public final class Reflector
 {
+    /**
+     * 获取物品Class
+     * <p>
+     * @return Class<?>
+     */
+    public Class<?> getCraftItemStackClass()
+    {
+        try
+        {
+            return Reflector.class.getClassLoader().loadClass(Reflector.getMinecraftPackageName() + ".inventory.CraftItemStack");
+        }
+        catch (ClassNotFoundException ex)
+        {
+            Logger.getLogger(Reflector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    /**
+     * 是否为CraftItemStack
+     * <p>
+     * @param obj 参数
+     * @return Boolean
+     */
+    public Boolean isCraftItemStack(Object obj)
+    {
+        return obj != null && getCraftItemStackClass().isAssignableFrom(obj.getClass());
+    }
+
     /**
      * 获取字段
      * <p>

@@ -18,6 +18,7 @@
 package com.ItemPlus.Core.v1_0_0.Entity;
 
 import com.ItemPlus.ItemPlus;
+import java.util.UUID;
 import org.bukkit.entity.Player;
 
 /**
@@ -27,16 +28,39 @@ import org.bukkit.entity.Player;
  */
 public class ItemPlayer extends ItemEntity
 {
-    private final Player player;
+    private final UUID uuid;
+    private Player player;
 
     /**
      * 构造ItemPlus玩家
      * <p>
+     * @param uuid uuid
      * @param player 玩家
      */
-    public ItemPlayer(Player player)
+    public ItemPlayer(UUID uuid, Player player)
     {
         super(player);
+        this.uuid = uuid;
+        this.player = player;
+    }
+
+    /**
+     * 获取UUID
+     * <p>
+     * @return UUID
+     */
+    public UUID getUUID()
+    {
+        return this.uuid;
+    }
+
+    /**
+     * 设置CraftPlayer
+     * <p>
+     * @param player 玩家
+     */
+    public void setCraftPlayer(Player player)
+    {
         this.player = player;
     }
 

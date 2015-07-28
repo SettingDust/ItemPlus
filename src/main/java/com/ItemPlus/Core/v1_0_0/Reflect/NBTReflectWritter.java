@@ -18,7 +18,6 @@
 package com.ItemPlus.Core.v1_0_0.Reflect;
 
 import com.ItemPlus.Core.v1_0_0.Utils.ISystem;
-import com.ItemPlus.ItemPlus;
 import com.ItemPlus.NBT.TAG;
 import com.ItemPlus.NBT.TAG_Byte;
 import com.ItemPlus.NBT.TAG_Byte_Array;
@@ -32,13 +31,13 @@ import com.ItemPlus.NBT.TAG_List;
 import com.ItemPlus.NBT.TAG_Long;
 import com.ItemPlus.NBT.TAG_Short;
 import com.ItemPlus.NBT.TAG_String;
+import com.comphenix.protocol.utility.MinecraftReflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -63,33 +62,23 @@ public final class NBTReflectWritter
      */
     public NBTReflectWritter(final ItemStack item)
     {
-        ClassLoader loader = NBTReflectReader.class.getClassLoader();
+        this.item = MinecraftReflection.getBukkitItemStack(item);
+        this.CRAFT_STACK = this.reflect.getCraftItemStackClass();
+        this.CRAFT_HANDLE = this.reflect.getField(null, CRAFT_STACK, "handle");
 
-        try
+        Class<?> clazz = CRAFT_HANDLE.getType();
+
+        String tag = "tag";
+
+        for (Field field : clazz.getDeclaredFields())
         {
-            this.item = item;
-            this.CRAFT_STACK = loader.loadClass(Reflector.getMinecraftPackageName() + ".inventory.CraftItemStack");
-            this.CRAFT_HANDLE = this.reflect.getField(null, CRAFT_STACK, "handle");
-
-            Class<?> clazz = CRAFT_HANDLE.getType();
-
-            String tag = "tag";
-
-            for (Field field : clazz.getDeclaredFields())
+            if (field.getName().equalsIgnoreCase("tag") || field.getName().equalsIgnoreCase("field_77990_d"))
             {
-                if (field.getName().equalsIgnoreCase("tag") || field.getName().equalsIgnoreCase("field_77990_d"))
-                {
-                    tag = field.getName();
-                }
+                tag = field.getName();
             }
-
-            this.STACK_TAG = this.reflect.getField(null, CRAFT_HANDLE.getType(), tag);
-
         }
-        catch (ClassNotFoundException ex)
-        {
-            ItemPlus.logger.getLogger().log(Level.SEVERE, null, ex);
-        }
+
+        this.STACK_TAG = this.reflect.getField(null, CRAFT_HANDLE.getType(), tag);
 
         this.nms = this.reflect.getFieldValue(CRAFT_HANDLE, this.item);
         this.tag = this.reflect.getFieldValue(STACK_TAG, nms);
@@ -109,9 +98,10 @@ public final class NBTReflectWritter
      * 写入标签
      * <p>
      * @param tag 标签
+     * @return ItemStack
      * @throws java.lang.Exception
      */
-    public void writeTag(final TAG tag) throws Exception
+    public ItemStack writeTag(final TAG tag) throws Exception
     {
         this.tag = buildTag(tag);
 
@@ -119,6 +109,8 @@ public final class NBTReflectWritter
         {
             this.reflect.setFieldValue(this.STACK_TAG, this.nms, this.tag);
         }
+
+        return this.item;
     }
 
     private Object buildTag(final TAG tag) throws Exception
@@ -181,47 +173,47 @@ public final class NBTReflectWritter
         }
         else if (tag instanceof TAG_Byte)
         {
-            return Class.forName(packageName + "NBTTagByte").getConstructor(byte.class).newInstance(tag.getValue());
+            return Class.forName(packageName + "NBTTagByte").getConstructor(String.class, byte.class).newInstance(tag.getName(), tag.getValue());
         }
         else if (tag instanceof TAG_Short)
         {
-            return Class.forName(packageName + "NBTTagShort").getConstructor(short.class).newInstance(tag.getValue());
+            return Class.forName(packageName + "NBTTagShort").getConstructor(String.class, short.class).newInstance(tag.getName(), tag.getValue());
         }
         else if (tag instanceof TAG_Int)
         {
-            return Class.forName(packageName + "NBTTagInt").getConstructor(int.class).newInstance(tag.getValue());
+            return Class.forName(packageName + "NBTTagInt").getConstructor(String.class, int.class).newInstance(tag.getName(), tag.getValue());
         }
         else if (tag instanceof TAG_Long)
         {
-            return Class.forName(packageName + "NBTTagLong").getConstructor(long.class).newInstance(tag.getValue());
+            return Class.forName(packageName + "NBTTagLong").getConstructor(String.class, long.class).newInstance(tag.getName(), tag.getValue());
         }
         else if (tag instanceof TAG_Float)
         {
-            return Class.forName(packageName + "NBTTagFloat").getConstructor(float.class).newInstance(tag.getValue());
+            return Class.forName(packageName + "NBTTagFloat").getConstructor(String.class, float.class).newInstance(tag.getName(), tag.getValue());
         }
         else if (tag instanceof TAG_Double)
         {
-            return Class.forName(packageName + "NBTTagDouble").getConstructor(double.class).newInstance(tag.getValue());
+            return Class.forName(packageName + "NBTTagDouble").getConstructor(String.class, double.class).newInstance(tag.getName(), tag.getValue());
         }
         else if (tag instanceof TAG_Byte_Array)
         {
-            return Class.forName(packageName + "NBTTagByteArray").getConstructor(byte[].class).newInstance(tag.getValue());
+            return Class.forName(packageName + "NBTTagByteArray").getConstructor(String.class, byte[].class).newInstance(tag.getName(), tag.getValue());
         }
         else if (tag instanceof TAG_String)
         {
-            return Class.forName(packageName + "NBTTagString").getConstructor(String.class).newInstance(((TAG_String) tag).getValue().replace("\"\"", "\""));
+            return Class.forName(packageName + "NBTTagString").getConstructor(String.class, String.class).newInstance(tag.getName(), ((TAG_String) tag).getValue().replace("\"\"", "\""));
         }
         else if (tag instanceof TAG_List)
         {
-            return Class.forName(packageName + "NBTTagList").getConstructor().newInstance();
+            return Class.forName(packageName + "NBTTagList").getConstructor(String.class).newInstance(tag.getName());
         }
         else if (tag instanceof TAG_Compound)
         {
-            return Class.forName(packageName + "NBTTagCompound").getConstructor().newInstance();
+            return Class.forName(packageName + "NBTTagCompound").getConstructor(String.class).newInstance(tag.getName());
         }
         else if (tag instanceof TAG_Int_Array)
         {
-            return Class.forName(packageName + "NBTTagIntArray").getConstructor(int[].class).newInstance(tag.getValue());
+            return Class.forName(packageName + "NBTTagIntArray").getConstructor(String.class, int[].class).newInstance(tag.getName(), tag.getValue());
         }
 
         return null;

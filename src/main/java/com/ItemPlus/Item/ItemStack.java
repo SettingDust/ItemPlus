@@ -66,7 +66,7 @@ public class ItemStack
     {
         try
         {
-            return new NBTReflectReader(this.item).getTag();
+            return new NBTReflectReader(this.item).getTag("tag");
         }
         catch (Exception ex)
         {

@@ -42,12 +42,9 @@ public final class PlayerManager
     {
         for (ItemPlayer player : this.playerList)
         {
-            if (player.getCraftPlayer() != null && player.getCraftPlayer().isOnline())
+            if (player.getUUID().equals(uuid))
             {
-                if (player.getCraftPlayer().getUniqueId().equals(uuid))
-                {
-                    return player;
-                }
+                return player;
             }
         }
 
@@ -119,7 +116,7 @@ public final class PlayerManager
         {
             ItemPlayer player = this.playerList.get(i);
 
-            if (player.getCraftPlayer().getUniqueId().equals(uuid))
+            if (player.getUUID().equals(uuid))
             {
                 this.playerList.remove(player);
                 return;
