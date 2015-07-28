@@ -1,4 +1,4 @@
-package com.Comphenix.PacketWrapper;
+package com.comphenix.PacketWrapper;
 
 import java.util.HashMap;
 import java.util.Map;

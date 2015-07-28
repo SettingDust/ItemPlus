@@ -1,4 +1,4 @@
-package com.Comphenix.PacketWrapper;
+package com.comphenix.PacketWrapper;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;

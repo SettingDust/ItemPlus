@@ -1,4 +1,4 @@
-package com.Comphenix.PacketWrapper;
+package com.comphenix.PacketWrapper;
 
 /*
  *  PacketWrapper - Contains wrappers for each packet in Minecraft.

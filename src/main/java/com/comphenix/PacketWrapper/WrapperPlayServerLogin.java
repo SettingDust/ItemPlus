@@ -1,4 +1,4 @@
-package com.Comphenix.PacketWrapper;
+package com.comphenix.PacketWrapper;
 
 import org.bukkit.World;
 import org.bukkit.WorldType;
