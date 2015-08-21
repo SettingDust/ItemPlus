@@ -17,7 +17,6 @@
 
 package com.ItemPlus.Core.v1_0_0.Ability;
 
-import com.ItemPlus.Event.Item.Ability.AbilityEndedEvent;
 import com.ItemPlus.Event.Item.Ability.AbilitySpellEvent;
 import com.ItemPlus.Item.Ability.Ability;
 import com.ItemPlus.Item.Ability.AbilityInfo;
