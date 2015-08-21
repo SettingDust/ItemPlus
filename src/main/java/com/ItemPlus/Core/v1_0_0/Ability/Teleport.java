@@ -14,7 +14,7 @@ import static org.bukkit.Bukkit.getServer;
 /**
  * 传送
  * <p/>
- * 向前方释传送一段距离。
+ * 向前方传送一段距离。
  * Teleport forwards the specified distance.
  * <p/>
  *
