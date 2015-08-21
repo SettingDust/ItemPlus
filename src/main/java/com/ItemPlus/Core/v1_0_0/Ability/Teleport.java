@@ -12,11 +12,9 @@ import org.bukkit.util.BlockIterator;
 import static org.bukkit.Bukkit.getServer;
 
 /**
- * 传送
- * <p/>
- * 向前方传送一段距离。
- * Teleport forwards the specified distance.
- * <p/>
+ * <p>传送</p>
+ * <p>向前方传送一段距离。</p>
+ * <p>Teleport forwards the specified distance.</p>
  *
  * @author SettingDust
  */
@@ -87,8 +85,6 @@ public final class Teleport extends Ability {
     }
 
     /**
-     * <p/>
-     *
      * @return int
      */
     public int getDistance() {
